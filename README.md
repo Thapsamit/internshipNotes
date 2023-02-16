@@ -73,3 +73,42 @@ https:<ec2-ipaddress>:80
 
 
 
+## How to setup in PM2:-
+
+1. Install PM2 in aws ec2 instance
+```
+npm install pm2 -g
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
