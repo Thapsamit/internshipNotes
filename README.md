@@ -63,7 +63,12 @@ sudo service apache2 start
 ### Make sure add inbound rules and outbound rules 
 - inbound rules to be setup as port 80 and listen to anywhere
 
+11. Run the react app using
 
+
+```
+https:<ec2-ipaddress>:80
+```
 
 
 
