@@ -1,41 +1,25 @@
 
 
+## use below to store session data in redux
+```js
+let obj = {}
+let data = {
+    "session": {
+        "session_id": 6,
+        "numbered_level": 1,
+        "session_video_id": "",
+        "session_audio": "",
+        "session_start_heading": "",
+        "session_start_subtext": "",
+        "session_end_heading": "",
+        "session_end_subtext": ""
+    },
+    "user_session": {
+        "user_session_uuid": "d7550d44-6be4-4d5a-b2c0-adc31b22746c"
+    }
+}
 
-# React Native Notes:-
-
-## Setup a bare react native app
-- First follow the official documentation
-- Second we can download android studio and its necessary packages
-- Do not manage a global version of react-native-cli instead use the npx command to create a react  native project 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+let newstate = {...obj,"sessiondata":data}
+console.log(newstate)
+```
+ 
