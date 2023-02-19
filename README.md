@@ -100,6 +100,13 @@
 - listens for events.
 - after registering worker it won't install if we have no change in our service worker file.
 
+## Register service worker
+
+- Check whether service worker support by browser
+
+## Install events inside service worker file
+
+
 
 
 
