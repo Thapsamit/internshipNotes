@@ -66,6 +66,13 @@
 }
 ```
 
+- After creating manfest file we need to link the manifest file with root page here in this case is index.html and also all those pages that need to be included in the PWA
+```html
+  <link rel="manifest" href="/manifest.json"/>
+
+```
+- After doing this we can go to chrome > application > manifest
+
 
 
 
