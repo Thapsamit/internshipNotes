@@ -81,7 +81,24 @@
 
 
 
+## Create a service worker
+- Heart of PWA like load content offline without internet
+- Use background sync
+- can use push notifcation
+- like messages or reminders
+- these are js files
+- it work on seperate thread and doesn't access to dom content.
+- They run in background their job is to like listen for fetch requests, push messages etc
 
+## service worker lifecycle:-
+- create serviceworker.js file in root directory of your project
+- register serviceworker in app.js 
+- install events
+- react to events
+- service worker becomes active 
+- active event
+- listens for events.
+- after registering worker it won't install if we have no change in our service worker file.
 
 
 
