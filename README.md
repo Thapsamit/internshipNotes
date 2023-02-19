@@ -106,6 +106,22 @@
 
 ## Install events inside service worker file
 
+- use addevent lisener
+
+```js
+// here self is pointing to regsitered service worker
+self.addEventListener("install", (evt) => {
+  console.log("service worker installed");
+});
+
+```
+
+## active events
+- activating the service worker
+
+## fetch events
+- getting something from server like a css file js file or something else
+
 
 
 
