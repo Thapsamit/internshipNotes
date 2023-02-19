@@ -73,8 +73,11 @@
 ```
 - After doing this we can go to chrome > application > manifest
 
+- Need to host the application somewhere in order to download the app in home screen of a mobile
+- For example we can host our pwa to netlify then we can go to the link and then the three dots of the chorme bar and click "ADD TO HOME SCREEN" it will download the PWA to our mobile phone
 
 
+- In IOS some properties are not supported of manifest file
 
 
 
