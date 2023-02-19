@@ -120,7 +120,13 @@ self.addEventListener("install", (evt) => {
 - activating the service worker
 
 ## fetch events
-- getting something from server like a css file js file or something else
+- getting something from server like a css file js file or something else.
+
+- we have the local development server that serves the file
+- we can listens for those fetch events
+
+
+
 
 
 
