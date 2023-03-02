@@ -80,3 +80,34 @@ console.log(newstate)
 }
 
 ```
+
+
+
+How to measure average time ?
+
+```python
+import datetime
+
+# Create a list of datetime.time objects
+time_list = [datetime.time(hour=10, minute=30),
+             datetime.time(hour=11, minute=45),
+             datetime.time(hour=12, minute=0),
+             datetime.time(hour=13, minute=15)]
+
+# Convert the datetime.time objects to datetime.datetime objects with the same date
+datetime_list = [datetime.datetime.combine(datetime.date.today(), t) for t in time_list]
+
+# Compute the average datetime object
+avg_datetime = datetime.datetime.fromtimestamp(sum(map(datetime.datetime.timestamp, datetime_list)) / len(datetime_list))
+
+# Extract the time part of the average datetime object
+avg_time = avg_datetime.time()
+
+# Print the average time
+print(avg_time)
+
+
+```
+
+
+
