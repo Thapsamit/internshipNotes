@@ -111,3 +111,11 @@ print(avg_time)
 
 
 
+```python
+@api_view(['POST'])
+def GetAllSessions(request):
+    sess_objs = Session.objects.all()
+    print(sess_objs)
+    sess_data = MandalaSessionSerializer(sess_objs,many=True).data 
+    return Response({"session_data":sess_data},status=status.HTTP_200_OK)
+```
