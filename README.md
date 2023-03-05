@@ -119,3 +119,43 @@ def GetAllSessions(request):
     sess_data = MandalaSessionSerializer(sess_objs,many=True).data 
     return Response({"session_data":sess_data},status=status.HTTP_200_OK)
 ```
+
+
+
+
+
+```python
+class SubLevelSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SubLevel 
+        fields = "__all__"
+
+class MandalaSessionSerializer(serializers.ModelSerializer):
+    sublev = SubLevelSerializer(source='sublevel_id') # source is basically the column name in which foreignkey is specified
+    class Meta:
+        model = Session
+        fields = ['session_uuid','numbered_level', 'session_audio','sublev']
+        
+```
+
+
+
+```python
+from django.db.models import Q
+
+# Assume your model is named Submission and has fields "user", "date", and "data"
+# We'll assume "date" is a DateTimeField
+
+# First, get the current submission for the given date
+current_submission = Submission.objects.filter(
+    user=user,
+    date__date=date  # filter by the date portion of the datetime field
+).latest('date')
+
+# Next, get the previous submission (if it exists)
+previous_submission = Submission.objects.filter(
+    Q(user=user) & Q(date__lt=current_submission.date)
+).latest('date')
+
+
+```
