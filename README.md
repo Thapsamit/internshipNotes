@@ -159,3 +159,19 @@ previous_submission = Submission.objects.filter(
 
 
 ```
+
+
+## The below serializes a single column or method field
+
+```python 
+
+class ProgressSerializer(serializers.ModelSerializer):
+    progress_outcomes = serializers.SerializerMethodField()
+
+    def get_progress_outcomes(self, obj):
+        return [outcome.outcome for outcome in obj.progress_outcomes.all()]
+    
+    class Meta:
+        model = Progress
+        fields = ['retention_duration','av_ratio','ih_ratio','resistance','restless','practice_time','progress_outcomes']
+```
