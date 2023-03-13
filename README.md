@@ -175,3 +175,70 @@ class ProgressSerializer(serializers.ModelSerializer):
         model = Progress
         fields = ['retention_duration','av_ratio','ih_ratio','resistance','restless','practice_time','progress_outcomes']
 ```
+
+
+# range based filtering in react
+
+```js
+
+import { useSelector } from 'react-redux';
+import { useState } from 'react';
+
+function FilteredRecords() {
+  const records = useSelector((state) => state.records); // Assuming your records are stored in the Redux store
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+
+  const handleStartDateChange = (event) => {
+    setStartDate(event.target.value);
+  };
+
+  const handleEndDateChange = (event) => {
+    setEndDate(event.target.value);
+  };
+
+  const filteredRecords = records.filter((record) => {
+    if (startDate && endDate) {
+      return record.date >= startDate && record.date <= endDate;
+    } else if (startDate) {
+      return record.date >= startDate;
+    } else if (endDate) {
+      return record.date <= endDate;
+    } else {
+      return true;
+    }
+  });
+
+  return (
+    <div>
+      <div>
+        <label htmlFor="start-date">Start Date:</label>
+        <input
+          type="date"
+          id="start-date"
+          value={startDate}
+          onChange={handleStartDateChange}
+        />
+      </div>
+      <div>
+        <label htmlFor="end-date">End Date:</label>
+        <input
+          type="date"
+          id="end-date"
+          value={endDate}
+          onChange={handleEndDateChange}
+        />
+      </div>
+      <ul>
+        {filteredRecords.map((record) => (
+          <li key={record.id}>
+            {record.title} ({record.date})
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+```
+
