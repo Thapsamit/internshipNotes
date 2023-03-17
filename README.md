@@ -266,3 +266,18 @@ sudo systemctl enable mysql
 mysql -u root -p
 
 ```
+
+
+## If got port is already in use in ubuntu ec2 instance
+
+```bash
+sudo lsof -i :7070
+
+
+```
+```
+sudo kill PID
+
+```
+
+
