@@ -281,3 +281,47 @@ sudo kill PID
 ```
 
 
+## Session start today:-
+
+```python 
+# for testing we can do this
+                _start_date = timezone.now()
+
+                _end_date = _start_date + \
+                    timedelta(hours=float(
+                        master_sessions.first().sublevel_id.sublevel_time))
+                        
+                        
+                        
+                        
+                    # For testing purpose
+                    _start_date += timedelta(
+                        hours=float(obj.sublevel_id.sublevel_time))
+                    _end_date += timedelta(hours=float(obj.sublevel_id.sublevel_time))
+                    
+                    
+                    
+                                    # for testing we can do this
+                _start_date = timezone.now()
+
+                _end_date = _start_date + \
+                    timedelta(hours=float(
+                        master_sessions.first().sublevel_id.sublevel_time))
+                        
+                        
+                        
+                                    # for testing purpose
+                    _start_date += timedelta(
+                        hours=float(obj.sublevel_id.sublevel_time)
+                    )
+                    _end_date += timedelta(
+                        hours=float(obj.sublevel_id.sublevel_time)
+                    )
+```
+
+
+
+
+
+
+
