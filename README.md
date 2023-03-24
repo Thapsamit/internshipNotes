@@ -321,6 +321,11 @@ sudo kill PID
 
 
 
+## create dump file of database
+```
+mysqldump -u [username] -p [database name] > [dump file name].sql
+```
+
 
 
 
