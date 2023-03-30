@@ -339,3 +339,68 @@ AttributeError: module 'datetime' has no attribute 'strptime'
 ```
 
 
+## How to check the validity of the form inputs in multi step form
+
+```js
+import { useState, useRef } from 'react';
+
+function App() {
+  const [step, setStep] = useState(1);
+  const formRef = useRef(null);
+
+  const handleNextClick = () => {
+    const form = formRef.current;
+    const requiredFields = form.querySelectorAll(`[required]:not([data-step])`);
+    let isValid = true;
+    requiredFields.forEach((field) => {
+      if (!field.checkValidity()) {
+        isValid = false;
+      }
+    });
+    if (isValid) {
+      setStep(step + 1);
+    } else {
+      alert('Please fill in all required fields before proceeding.');
+    }
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    // Submit the form here
+  };
+
+  return (
+    <form ref={formRef} onSubmit={handleSubmit}>
+      {step === 1 && (
+        <div>
+          <label>
+            Name:
+            <input type="text" name="name" required />
+          </label>
+          <label>
+            Email:
+            <input type="email" name="email" required />
+          </label>
+          <button type="button" onClick={handleNextClick}>Next</button>
+        </div>
+      )}
+      {step === 2 && (
+        <div>
+          <label>
+            Address:
+            <input type="text" name="address" required />
+          </label>
+          <label>
+            Phone:
+            <input type="tel" name="phone" required />
+          </label>
+          <button type="button" onClick={() => setStep(step - 1)}>Back</button>
+          <button type="submit">Submit</button>
+        </div>
+      )}
+    </form>
+  );
+}
+
+```
+
