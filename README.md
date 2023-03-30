@@ -327,6 +327,15 @@ mysqldump -u [username] -p [database name] > [dump file name].sql
 ```
 
 
+## Convert a date coming in string format from frontend to django backend
 
+```python 
+>>> dob = "20/02/2001"
+>>> dobtodt = datetime.strptime(dob,'%d/%m/%Y').date()
+Traceback (most recent call last):
+  File "<console>", line 1, in <module>
+AttributeError: module 'datetime' has no attribute 'strptime'
+>>> dobtodt = datetime.datetime.strptime(dob,'%d/%m/%Y').date() 
+```
 
 
