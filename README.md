@@ -3,6 +3,9 @@
 ### What is sockets and websockets?
 
 
+## socket.id
+- This id is attached to each unique user that is connected to  the socket server
+
 
 
 
