@@ -7,6 +7,9 @@
 - <ActivityIndicator> like a loader
 
 
+# [id].js //  this is a component that's name will be dynamic
+
+
 
 
 
