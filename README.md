@@ -1,47 +1,7 @@
+## Why To use Express.js?
+- Node.js is a runtime environment not a framework in which we have to write a lot of code to even build a simple server
+- Therefore express.js is used to reduce the number of lines of code.
+- It is good in routing
 
 
-### What is sockets and websockets?
-
-
-## socket.id
-- This id is attached to each unique user that is connected to  the socket server
-
-
-## rooms in socket.io
-
-- It allows to create multiple rooms for client for example if 2 players needed for a game then more than 2 can't play the game.Therefor create multiple rooms to support multiple players
-
-
-## Namespace and rooms in socket.io
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+## Difference between nodejs, koa, express?
