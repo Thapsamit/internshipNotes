@@ -12,6 +12,14 @@
 ## What is middleware?
 - A function that is placed in between request and response object
 - Request ---->  Middleware ----> Response <br>
-  <-------------------------------
-          
+  <---------------------------------------
+  
+```js
+app.use((req,res,next)=>{
+
+next() // execute next middle ware functions
+})
+
+
+```          
       
