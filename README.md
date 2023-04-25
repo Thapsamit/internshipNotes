@@ -5,3 +5,13 @@
 
 
 ## Difference between nodejs, koa, express?
+
+## Route Parameters.
+
+
+## What is middleware?
+- A function that is placed in between request and response object
+- Request ---->  Middleware ----> Response 
+          <----------------------
+          
+      
