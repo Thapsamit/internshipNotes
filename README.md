@@ -9,6 +9,9 @@
 - Memoization is a way to cache a result so that it doesn’t need to be computed again. This can boost performance.
 
 
+### useLayoutEffect :- 
+- Similar to useEffect but the difference is that it is synchronus means it works when dom elements calculated and painted on screen 
+
 
 
 
