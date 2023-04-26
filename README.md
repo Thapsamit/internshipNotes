@@ -48,3 +48,11 @@ next() // execute next middle ware functions
 
 - Then run npm run build it will create the build folder inside server
 
+
+```js
+const date = new Date("January 30,2030")
+console.log(isNaN(date))
+// return false
+// because date is always do date.valueOf() that returns a number and if it is a date then only it returns a number otherwise if it is invalid date then it doesn't returns numbers
+```
+
