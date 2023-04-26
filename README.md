@@ -35,3 +35,16 @@ next() // execute next middle ware functions
 
 ### what is origin 
 - the combination of domain name and port where the application is running but browser by default blocks all the cross origin request as when app in one origin requests for the data from other origins (the application running in different origins ) is blocked
+
+
+### How to make build folder of react app inside the server files
+
+-  create a script in frontend react 
+```js
+   {
+    "build":"BUILD_PATH=../server/public react-scripts build"
+   }
+```
+
+- Then run npm run build it will create the build folder inside server
+
