@@ -23,3 +23,10 @@ next() // execute next middle ware functions
 
 ```          
       
+### what is the use of app.use(express.json())
+
+- app.use(express.json()) is a middleware function in the Express.js framework that parses incoming JSON payloads.
+
+- When a client sends data to a server in the form of a JSON payload, the server needs to be able to parse that data and convert it into a format that can be used by the application. The express.json() middleware function does just that by parsing the incoming JSON data and making it available on the request object as req.body.
+
+- By using this middleware, we can easily parse and handle JSON data in our routes or controllers without having to manually parse it ourselves. This can save us a lot of time and make our code more maintainable.
