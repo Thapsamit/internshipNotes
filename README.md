@@ -30,3 +30,8 @@ next() // execute next middle ware functions
 - When a client sends data to a server in the form of a JSON payload, the server needs to be able to parse that data and convert it into a format that can be used by the application. The express.json() middleware function does just that by parsing the incoming JSON data and making it available on the request object as req.body.
 
 - By using this middleware, we can easily parse and handle JSON data in our routes or controllers without having to manually parse it ourselves. This can save us a lot of time and make our code more maintainable.
+
+
+
+### what is origin 
+- the combination of domain name and port where the application is running but browser by default blocks all the cross origin request as when app in one origin requests for the data from other origins (the application running in different origins ) is blocked
