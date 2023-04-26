@@ -1,12 +1,13 @@
 
 
 
-# React Native Notes:-
+# React.js Hooks Notes:-
 
-## Setup a bare react native app
-- First follow the official documentation
-- Second we can download android studio and its necessary packages
-- Do not manage a global version of react-native-cli instead use the npx command to create a react  native project 
+
+### useCallback() - 
+- useCallback is a hook that will return a memoized version of the callback function that only changes if one of the dependencies has changed.
+- Memoization is a way to cache a result so that it doesn’t need to be computed again. This can boost performance.
+
 
 
 
