@@ -74,7 +74,18 @@ STATIC_ROOT = os.path.join(BASE_DIR,'staticfiles')
 ```python
 python manage.py collectstatic
 ```
+- After doing above things and let suppose we did DEBUG = False
+- then we need to do following
+- ALLOWED_HOSTS in settings.py file
+```python
+ALLOWED_HOSTS = ['localhost:8000','127.0.0.1',mywebsite.com]
+```
+- In urls.py write this 
+```python
 
+urlpatterns+=static(settings.STATIC_URL,document_root=settings.STATIC_ROOT)
+
+```
 
 
 
