@@ -58,7 +58,15 @@ urlpatterns = [
 ] + static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT) # add this static behind urlpatterns
 ```
 
+## what if we debug = False
 
+- The ALLOWED_HOSTS setting is enforced: When DEBUG = False, Django will only serve requests with the Host header that matches a value in the ALLOWED_HOSTS setting. This is a security measure to prevent HTTP Host header attacks.
+
+- Static files are not served: When DEBUG = False, Django will not serve static files (CSS, JavaScript, and images) in development mode. This is because serving static files in production is typically done using a web server such as Nginx or Apache.
+
+- Template errors are not displayed: When DEBUG = False, Django will not display template syntax errors to the end-users. Instead, a generic error page will be displayed.
+
+- E-mail is sent on errors: When DEBUG = False, Django will send an email to the site administrators with details of the error, including a full stack trace. This is a helpful feature for debugging errors in production.
 
 
 
