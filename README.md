@@ -29,7 +29,9 @@
 - inside styles we can create styles.css or anything else
 
 - inside settings.py write this
-- STATICFILES_DIRS = [BASEDIR / "static"]
+```python
+STATICFILES_DIRS = [BASEDIR / "static"]
+```
 
 ## Where to upload user generated media files:-
 
