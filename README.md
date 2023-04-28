@@ -35,7 +35,7 @@
 
 - for example if user has put an image in the form then where to upload this media
 - in Settings.py write this
-- ```python 
+```python 
 MEDIA_ROOT = os.path.join(BASE_DIR,'static/images')
 
 ```
