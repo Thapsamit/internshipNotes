@@ -67,6 +67,13 @@ urlpatterns = [
 - Template errors are not displayed: When DEBUG = False, Django will not display template syntax errors to the end-users. Instead, a generic error page will be displayed.
 
 - E-mail is sent on errors: When DEBUG = False, Django will send an email to the site administrators with details of the error, including a full stack trace. This is a helpful feature for debugging errors in production.
+- In order to serve static files in production we need to write below line in settings.py file and then run the next command following the below command
+```python 
+STATIC_ROOT = os.path.join(BASE_DIR,'staticfiles')
+```
+```python
+python manage.py runserver
+```
 
 
 
