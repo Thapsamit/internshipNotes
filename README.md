@@ -14,7 +14,11 @@
 ```
 __tests__
 ```
-
+- or we can directly add the test file inside the folder 
+- for example 
+```js
+launches.tests.js
+```
 
 
 
