@@ -72,7 +72,7 @@ urlpatterns = [
 STATIC_ROOT = os.path.join(BASE_DIR,'staticfiles')
 ```
 ```python
-python manage.py runserver
+python manage.py collectstatic
 ```
 
 
