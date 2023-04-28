@@ -41,6 +41,10 @@ STATICFILES_DIRS = [BASEDIR / "static"]
 MEDIA_ROOT = os.path.join(BASE_DIR,'static/images')
 
 ```
+- also write this 
+```python
+MEDIA_URL = ""
+```
 
 
 
