@@ -7,6 +7,10 @@
 - Assertions - example 5+5 = 10
 - Mocking - mock the database where create of data doesn't effect
 
+### Install of jest
+- Install jest 
+- Then in scripts inside {"test":"jest"}
+- create a folder __tests__
 
 
 
