@@ -1,13 +1,11 @@
 
 
 
-# React Native Notes:-
-
-## Setup a bare react native app
-- First follow the official documentation
-- Second we can download android studio and its necessary packages
-- Do not manage a global version of react-native-cli instead use the npx command to create a react  native project 
-
+### TESTING:-
+- Test Runner - finds all test and runs through them and give result
+- Test Fixtures - how test are setup and organised , each fixtures can run in their own environment
+- Assertions - example 5+5 = 10
+- Mocking - mock the database where create of data doesn't effect
 
 
 
