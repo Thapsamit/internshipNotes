@@ -88,7 +88,7 @@ urlpatterns+=static(settings.STATIC_URL,document_root=settings.STATIC_ROOT)
 ```
 
 - After this we need to install whitenoise to serve image files
-- then in settings.py in INSTALLED_APPS add the middleware whitenoise
+- then in settings.py in middleware add the middleware whitenoise
 
 
 
