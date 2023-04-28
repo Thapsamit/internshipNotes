@@ -10,7 +10,10 @@
 ### Install of jest
 - Install jest 
 - Then in scripts inside {"test":"jest"}
-- create a folder __tests__
+- create a folder named
+```
+__tests__
+```
 
 
 
