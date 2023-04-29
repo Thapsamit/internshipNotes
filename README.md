@@ -93,7 +93,16 @@ urlpatterns+=static(settings.STATIC_URL,document_root=settings.STATIC_ROOT)
 
 
 
+## How to write requirements.txt
+-  To create requirements.txt
+```
+pip freeze > requirements.txt
+```
 
+- To install from requirements.txt
+```
+pip install -r requirements.txt
+```
 
 
 
