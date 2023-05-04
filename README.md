@@ -78,3 +78,27 @@ CREATE TABLE assigned_events (
 
 ```
 
+
+
+- To implement this functionality, you can create a new table called contacts with the following columns:
+
+contact_id: A unique identifier for each contact.
+user_id: The ID of the user who added the contact.
+contact_name: The name of the contact.
+contact_email: The email address of the contact.
+contact_phone: The phone number of the contact.
+
+
+
+```sql
+
+CREATE TABLE contacts (
+  contact_id INT NOT NULL PRIMARY KEY,
+  user_id INT NOT NULL,
+  contact_name VARCHAR(255) NOT NULL,
+  contact_email VARCHAR(255) NOT NULL,
+  contact_phone VARCHAR(255) NOT NULL,
+  FOREIGN KEY (user_id) REFERENCES users(user_id)
+);
+
+```
