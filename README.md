@@ -28,3 +28,11 @@ DATABASES = {
 
 
 ```
+
+
+### Databases 👎
+```
+\l # to show databas
+\c databasename # to change databse
+\dt # to show data tables
+```
