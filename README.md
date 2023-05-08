@@ -102,3 +102,67 @@ CREATE TABLE contacts (
 );
 
 ```
+
+
+
+
+
+## What is persist reducer and persistStore
+```js
+import { persistReducer, persistStore } from "redux-persist";
+```
+
+## what is this why we required?
+
+The code you provided is importing two functions, persistReducer and persistStore, from the "redux-persist" library. These functions are commonly used in Redux applications that require data persistence.
+
+Redux is a state management library for JavaScript applications. It helps manage the state of your application in a predictable and centralized manner. However, by default, Redux state is reset whenever the page is refreshed or the application is restarted.
+
+In some cases, you may need to persist the Redux state across page refreshes or app restarts, so that the user's data and application state are preserved. This is where the "redux-persist" library comes into play.
+
+The persistReducer function is used to create a new reducer that wraps your existing Redux reducer. It adds the capability to persist the state managed by your reducer. It takes a configuration object as an argument, which specifies the storage engine to use (e.g., local storage, session storage, AsyncStorage, etc.) and other options for data serialization and migration.
+
+The persistStore function is used to create a persisted Redux store. It takes the Redux store as an argument and returns a persisted version of the store. This persisted store will automatically load the previously saved state from the storage engine specified in the persistReducer configuration. It also enables auto-rehydration, which means that whenever the application is loaded, it will rehydrate the persisted state into the Redux store.
+
+Here's an example of how these functions can be used:
+
+
+```js
+import { createStore } from "redux";
+import { persistReducer, persistStore } from "redux-persist";
+import storage from "redux-persist/lib/storage";
+
+// Create your Redux reducer
+const rootReducer = (state, action) => {
+  // Your reducer logic
+};
+
+// Configure Redux persist
+const persistConfig = {
+  key: "root",
+  storage: storage,
+  // Add any additional configuration options here
+};
+
+// Create the persisted reducer
+const persistedReducer = persistReducer(persistConfig, rootReducer);
+
+// Create the Redux store
+const store = createStore(persistedReducer);
+
+// Create the persisted store
+const persistedStore = persistStore(store);
+
+export { store, persistedStore };
+
+
+```
+
+
+In this example, the persistConfig object defines the configuration options for Redux persist, including the storage engine to use (in this case, storage refers to the local storage).
+
+The persistReducer function is then called with the persistConfig and the root reducer (rootReducer in this example) to create a new persisted reducer.
+
+Finally, the Redux store is created with the persisted reducer, and the persistStore function is used to create the persisted store.
+
+By using persistReducer and persistStore, you can ensure that the Redux state is automatically persisted and rehydrated across page refreshes or app restarts, providing a seamless user experience.
