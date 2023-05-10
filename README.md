@@ -166,3 +166,36 @@ The persistReducer function is then called with the persistConfig and the root r
 Finally, the Redux store is created with the persisted reducer, and the persistStore function is used to create the persisted store.
 
 By using persistReducer and persistStore, you can ensure that the Redux state is automatically persisted and rehydrated across page refreshes or app restarts, providing a seamless user experience.
+
+
+## Sample api response for location and location claouse:-
+```
+{
+  "location_id": "your-location-id",
+  "clauses": [
+    {
+      "clause_id": 1,
+      "clause_uuid": "clause-uuid-1",
+      "clause_section": 1,
+      "clause_page": 3,
+      "clause_name": "Clause A",
+      "clause_details": "Details of A",
+      "clause_notes": "Notes of A"
+    },
+    {
+      "clause_id": 2,
+      "clause_uuid": "clause-uuid-2",
+      "clause_section": 1,
+      "clause_page": 3,
+      "clause_name": "Clause B",
+      "clause_details": "Details of B",
+      "clause_notes": "Notes of B"
+    },
+    ...
+  ]
+}
+
+
+```
+
+
