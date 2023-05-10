@@ -197,5 +197,10 @@ By using persistReducer and persistStore, you can ensure that the Redux state is
 
 
 ```
+# Invitation url can be like this:-
+so that the user can be registered against a company for a specific role and for a specific location also
 
+```js
+https://yourapp.com/register?invite_token=xxxxxxxx&role=role_type&company_id=company_id&location_id=locationid
+```
 
