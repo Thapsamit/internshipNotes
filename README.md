@@ -18,3 +18,11 @@ sudo apt update
 sudo yum update -y
 sudo yum install -y python3
 ```
+
+
+### setup postgresql in aws ec2 ubuntu instance
+
+```
+ $ sudo apt-get update
+ $ sudo apt-get install postgresql postgresql-contrib
+```
