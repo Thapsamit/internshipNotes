@@ -12,3 +12,9 @@ Host my-ec2-instance
 
 sudo apt update
 ```
+
+### install python in ec2  
+``` sql
+sudo yum update -y
+sudo yum install -y python3
+```
