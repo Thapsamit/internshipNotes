@@ -10,4 +10,5 @@ Host my-ec2-instance
 ### Update the system
 ```sql
 
+sudo apt update
 ```
