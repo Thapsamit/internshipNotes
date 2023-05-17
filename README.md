@@ -26,3 +26,11 @@ sudo yum install -y python3
  $ sudo apt-get update
  $ sudo apt-get install postgresql postgresql-contrib
 ```
+
+- PostgreSQL should now be installed on your EC2 instance. By default, PostgreSQL creates a user named "postgres" with administrative privileges. You can switch to the "postgres" user by running the following command:
+
+- Access postgresql using below command
+```sql
+sudo -i -u postgres
+```
+
