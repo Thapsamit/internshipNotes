@@ -204,3 +204,67 @@ so that the user can be registered against a company for a specific role and for
 https://yourapp.com/register?invite_token=xxxxxxxx&role=role_type&company_id=company_id&location_id=locationid
 ```
 
+
+## group events by months
+``` js
+import React from 'react';
+
+function EventTable({ events }) {
+  // Parse event due date to Date objects
+  const parsedEvents = events.map((event) => ({
+    ...event,
+    event_due_date: new Date(event.event_due_date),
+  }));
+
+  // Group events by month
+  const groupEventsByMonth = (events) => {
+    return events.reduce((grouped, event) => {
+      const monthYear = event.event_due_date.toLocaleString('default', {
+        month: 'long',
+        year: 'numeric',
+      });
+
+      if (!grouped[monthYear]) {
+        grouped[monthYear] = [];
+      }
+
+      grouped[monthYear].push(event);
+      return grouped;
+    }, {});
+  };
+
+  const groupedEvents = groupEventsByMonth(parsedEvents);
+
+  return (
+    <div>
+      {Object.keys(groupedEvents).map((monthYear) => (
+        <div key={monthYear}>
+          <h2>{monthYear}</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Event Name</th>
+                <th>Due Date</th>
+                {/* Add more table headers as needed */}
+              </tr>
+            </thead>
+            <tbody>
+              {groupedEvents[monthYear].map((event) => (
+                <tr key={event.event_id}>
+                  <td>{event.event_name}</td>
+                  <td>{event.event_due_date.toLocaleDateString()}</td>
+                  {/* Add more table cells with event details as needed */}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+export default EventTable;
+
+```
+
