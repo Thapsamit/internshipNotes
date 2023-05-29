@@ -81,7 +81,15 @@ npm install pm2 -g
 ```
 
 
+## How to increase volume of aws ec2 
 
+```
+
+
+use growpart 
+sudo resize2fs /dev/xvda1
+
+```
 
 
 
