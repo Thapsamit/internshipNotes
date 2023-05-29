@@ -101,10 +101,11 @@ pm2 stop all # tos top all the process
 pm2 delete process_id # to delete all processes
 ```
 
+## how to activate virtual env in aws ec2 ubuntu instance
 
-
-
-
+```sql
+source venv\bin\activate
+```
 
 
 
