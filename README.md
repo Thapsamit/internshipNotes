@@ -92,12 +92,27 @@ sudo resize2fs /dev/xvda1
 ```
 
 
+## How to add new key/value pair and new pem file if we lost the existing pem file of aws ec2 instance?
 
+- Step 1 - Create new key value pair from aws instance
+- Step 2 - The above will generate new .pem file
+- Step 3 - After getting pem file Go to a local terminal from your computer and write below command to generate public key material from .pem file
+```bash
+ssh-keygen -y -f /path/to/pem/file.pem
+```
+Ex - 
+```bash
+ssh-keygen -y -f C:\Users\thapl\Downloads\amit_turnkey.pem
+```
+- Step 4 - Now connect to EC2 intance from AWS console 
+- Step 5 - Write below command to open authorized keys
+```bash 
+nano .ssh/authorized_keys
 
-
-
-
-
+```
+- Step 6 - The above will open nano editor where the public key material is writtern
+- Step 7 - Replace the content with the content that you got from the local terminal in step 3
+- Step 8 - connect with new .pem file through ssh or termius
 
 
 
