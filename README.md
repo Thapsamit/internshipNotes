@@ -55,3 +55,47 @@ To fix the issue, look for the following line in your server/package.json and cl
 If you see this line, remove it. It is sometimes unintentionally added by your development environment, and it creates a circular dependency. The install will take up more and more memory until the build fails!
 
 With this line removed from all package.json files, you should no longer get this common error. Woohoooo!
+
+
+
+## auto deploy the pushed changes to aws ec2 
+
+```yml
+name: Deploy to EC2
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+      
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: 14
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Deploy to EC2
+      uses: appleboy/ssh-action@master
+      with:
+        host: <EC2_INSTANCE_IP>
+        username: <EC2_USERNAME>
+        key: ${{ secrets.DEPLOYMENT_KEY }}
+        script: |
+          cd /path/to/project
+          git pull origin main
+          npm install --production
+          pm2 restart <YOUR_APP_NAME>
+
+
+```
+
