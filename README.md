@@ -4,6 +4,8 @@
 - Create a .github folder in project root directory
 - create workflows folder 
 - create yml file like node.yml
+- to remove watch mode which means the script that run always
+- strategy means like to check the code need to run on node 16 or 14 etc
 
 ### name.yml file content
 
@@ -16,6 +18,11 @@ on:
     branches:[master]
 jobs:
    build:
+    env: 
+      CI: true
+    strategy:
+      matrix:
+        node-version: [16.x,14.x]
     runs-on: ubuntu-latest
     steps: 
       - uses: actions/checkout@v2
