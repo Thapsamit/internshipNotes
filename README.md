@@ -6,6 +6,7 @@
 - create yml file like node.yml
 - to remove watch mode which means the script that run always
 - strategy means like to check the code need to run on node 16 or 14 etc
+- for using variables use ${{}}
 
 ### name.yml file content
 
@@ -28,7 +29,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
         with:
-          node-version:'16'
+          node-version:${{matrix.node-version}}
       - run: npm install
       - run: npm run build --prefix client
 ```
