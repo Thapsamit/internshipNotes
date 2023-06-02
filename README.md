@@ -21,6 +21,7 @@ jobs:
    build:
     env: 
       CI: true
+      MONGO_URL: mongodb://localhost/databasename
     strategy:
       matrix:
         node-version: [16.x,14.x]
