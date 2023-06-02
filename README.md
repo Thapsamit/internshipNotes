@@ -30,6 +30,8 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version:${{matrix.node-version}}
+      - name: Start MongoDB
+      uses: supercharge/mongodb-github-action@1.8.0
       - run: npm install
       - run: npm run build --prefix client
 ```
