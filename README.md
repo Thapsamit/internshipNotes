@@ -27,3 +27,20 @@ jobs:
 ```
 
 - push the file along with project in github repo
+
+
+
+##Common Build Pipeline Errors
+Heads up! If your build pipeline is failing at the "run npm install" step with the following error:
+
+Error: Process completed with exit code 137.
+
+This happens when the build server runs out of memory during the install step, and terminates the build process.
+
+To fix the issue, look for the following line in your server/package.json and client/package.json:
+
+"nasa-project": "file:..",
+
+If you see this line, remove it. It is sometimes unintentionally added by your development environment, and it creates a circular dependency. The install will take up more and more memory until the build fails!
+
+With this line removed from all package.json files, you should no longer get this common error. Woohoooo!
