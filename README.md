@@ -99,3 +99,58 @@ jobs:
 
 ```
 
+
+## how to automate to deploy to aws ec2 instance
+
+```yml
+
+name: Node Basic Workflow CI/CD
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "16"
+      - run: npm install
+
+  deploy:
+    env:
+      CI: true
+      secrets:
+
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Deploy to EC2
+        uses: appleboy/ssh-action@master
+        with:
+          host: 43.204.249.218
+          username: ubuntu
+          key: ${{ secrets.DEPLOYMENT_KEY }}
+          script: |
+            cd /home/ubuntu/nodecicd
+            git pull origin master
+            npm install 
+            pm2 restart nodecicd
+
+
+```
+- Put DEPLOYMENT_KEY under secrets of github repo 
+- the pem file content should be copy there with start and end 
+
