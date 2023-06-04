@@ -268,3 +268,55 @@ export default EventTable;
 
 ```
 
+``` js
+  const handleAddToCalendar = async () => {
+    const gapi = window.gapi;
+    const google = window.google;
+    await gapi.client.init({
+      apiKey: "AIzaSyCOyvNgig0__v0elJ1GWbs0FzQUX5JvusM",
+      discoveryDocs: [
+        "https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest",
+      ],
+    });
+    console.log(google);
+    const tokenClient = await google.accounts.oauth2.initTokenClient({
+      client_id:
+        "46934920336-alili4k8nlnl4ggj10eonek1uelbppu8.apps.googleusercontent.com",
+      scope: "https://www.googleapis.com/auth/calendar",
+      callback: "", // defined later
+    });
+    const token = gapi.client.getToken();
+    console.log(gapi);
+
+    console.log(token);
+
+    // apiCalendar.handleAuthClick();
+    // const auth2 = gapi.auth2.getAuthInstance();
+    // console.log(auth2.isSignedIn.get());
+    // const gapi = window.gapi;
+    // console.log(gapi);
+    // const auth2 = gapi.auth2.getAuthInstance();
+    // if (!auth2.isSignedIn.get()) {
+    //   try {
+    //     await auth2.signIn();
+    //   } catch (error) {
+    //     console.error("Error signing in with Google:", error);
+    //     return;
+    //   }
+    // }
+  };
+
+  // useEffect(() => {
+  //   const script = document.createElement("script");
+  //   script.src = "https://accounts.google.com/gsi/client";
+  //   script.onload = () => {
+  //     window.onGoogleLibraryLoad = () => {
+  //       console.log("Google Sign-In library loaded");
+  //       gapi.load("auth2", () => {
+  //         gapi.auth2.init(config);
+  //       });
+  //     };
+  //   };
+  //   document.body.appendChild(script);
+  // }, []);
+```
