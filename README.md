@@ -320,3 +320,87 @@ export default EventTable;
   //   document.body.appendChild(script);
   // }, []);
 ```
+
+
+## Nearby Places Using maps
+```
+import React, { useEffect } from 'react';
+import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
+import { useLoadScript } from '@react-google-maps/api';
+
+const containerStyle = {
+  position: 'relative',
+  width: '400px',
+  height: '400px'
+};
+
+const mapStyle = {
+  position: 'absolute',
+  top: 0,
+  left: 0,
+  width: '100%',
+  height: '100%'
+};
+
+const center = {
+  lat: 37.7749,
+  lng: -122.4194
+};
+
+const libraries = ['places'];
+
+const Map = () => {
+  const { isLoaded, loadError } = useLoadScript({
+    googleMapsApiKey: 'YOUR_API_KEY',
+    libraries: libraries
+  });
+
+  useEffect(() => {
+    if (isLoaded) {
+      // Create a Places service object
+      const service = new window.google.maps.places.PlacesService(mapRef.current);
+
+      // Define the request parameters
+      const request = {
+        location: center,
+        radius: 5000, // Search within a 5km radius of the center
+        type: ['restaurant', 'park', 'museum'] // Types of places to search for
+      };
+
+      // Send the request to the Places service
+      service.nearbySearch(request, (results, status) => {
+        if (status === window.google.maps.places.PlacesServiceStatus.OK) {
+          // Process the retrieved places results
+          for (let i = 0; i < results.length; i++) {
+            const place = results[i];
+            // Create a marker for each place
+            new window.google.maps.Marker({
+              position: place.geometry.location,
+              map: mapRef.current
+            });
+          }
+        }
+      });
+    }
+  }, [isLoaded]);
+
+  if (loadError) {
+    return <div>Error loading Google Maps</div>;
+  }
+
+  return isLoaded ? (
+    <div style={containerStyle}>
+      <GoogleMap
+        ref={mapRef}
+        mapContainerStyle={mapStyle}
+        center={center}
+        zoom={10}
+      />
+    </div>
+  ) : (
+    <div>Loading Google Maps...</div>
+  );
+};
+
+export default Map;
+```
