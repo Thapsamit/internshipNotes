@@ -323,7 +323,7 @@ export default EventTable;
 
 
 ## Nearby Places Using maps
-```
+```js
 import React, { useEffect } from 'react';
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 import { useLoadScript } from '@react-google-maps/api';
