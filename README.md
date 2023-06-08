@@ -404,3 +404,14 @@ const Map = () => {
 
 export default Map;
 ```
+
+### for not allowing the datefield to be optional
+```python
+class TaskSerializer(serializers.ModelSerializer):
+    task_due_date = serializers.DateField(allow_null=True, required=False)
+
+    class Meta:
+        model = Task
+        fields = ['task_name', 'task_assigned_to', 'task_due_date']
+
+```
