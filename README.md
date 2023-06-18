@@ -4,6 +4,7 @@
 
 # consumers.py
 
+```python
 import json
 from channels.generic.websocket import AsyncWebsocketConsumer
 from django.contrib.auth import get_user_model
@@ -35,3 +36,5 @@ class NotificationConsumer(AsyncWebsocketConsumer):
     async def notification_update(self, event):
         # Send notification update to the WebSocket connection
         await self.send(text_data=json.dumps(event['data']))
+
+```
