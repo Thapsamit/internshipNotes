@@ -1,41 +1,37 @@
+## Web sockets 
 
+- Consumers.py file
 
+# consumers.py
 
-# React Native Notes:-
+import json
+from channels.generic.websocket import AsyncWebsocketConsumer
+from django.contrib.auth import get_user_model
+from your_app.models import Notification
 
-## Setup a bare react native app
-- First follow the official documentation
-- Second we can download android studio and its necessary packages
-- Do not manage a global version of react-native-cli instead use the npx command to create a react  native project 
+class NotificationConsumer(AsyncWebsocketConsumer):
+    async def connect(self):
+        # Get the email from the URL or headers, authenticate the user, and establish the WebSocket connection
+        # Example: authentication using URL query parameter
+        email = self.scope['url_route']['kwargs']['email']
+        user = get_user_model().objects.get(email=email)
+        await self.accept()
 
+        # Subscribe the user to their corresponding notification channel
+        await self.channel_layer.group_add(
+            str(user.id),
+            self.channel_name
+        )
 
+    async def disconnect(self, close_code):
+        # Unsubscribe the user from their notification channel
+        email = self.scope['url_route']['kwargs']['email']
+        user = get_user_model().objects.get(email=email)
+        await self.channel_layer.group_discard(
+            str(user.id),
+            self.channel_name
+        )
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    async def notification_update(self, event):
+        # Send notification update to the WebSocket connection
+        await self.send(text_data=json.dumps(event['data']))
