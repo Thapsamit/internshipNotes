@@ -30,6 +30,7 @@
 
 #### 3 - Incremental static generation:-
 - feture of above two rendering using {next:{revalidate:10}}
+- Data fetched after certain amount of times
 
 
 
