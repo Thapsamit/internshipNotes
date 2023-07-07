@@ -26,7 +26,7 @@
 
 
 ## Docker architecture
-![architecture]{https://docs.docker.com/assets/images/architecture.svg}
+![architecture](https://docs.docker.com/assets/images/architecture.svg)
 
 
 
