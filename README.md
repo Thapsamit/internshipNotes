@@ -78,6 +78,16 @@ sudo systemctl start docker
 ```
 
 
+# to build
+```bash
+ docker build -t <image-name> .  
+```
+# to run docker
+```bash
+docker run -p <HOST_PORT>:<CONTAINER_PORT> your-image-name
+```
+
+
 
 
 
