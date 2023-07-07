@@ -32,7 +32,15 @@
 - feture of above two rendering using {next:{revalidate:10}}
 - Data fetched after certain amount of times
 
+## Next js provides serverless function also
+- we can't have route and page together
+- don't create route within folder instead put inside api/foldernane/route.js
 
+
+## Managing Metadata
+- Static metadata:-
+  - 
+- Dynamic metadata
 
 
 
