@@ -13,3 +13,28 @@
 - To use client side render for a component
 - within app all component are react server component, they rendered on server side
 - to turn a componet into client rendered we need to use a directive at top of that component "use client"
+
+
+## when to use server componnet and client component?
+### Nested routes
+- create nested folder within app to achieve nested routes
+### Dynamic routes
+
+
+## Data fetching in Next js
+#### 1 - Server side rendering:-
+- Dynamic data from server every time
+
+#### 2 - static side rendering:-
+- by default uses this , it fetches data and caches it maybe this data not changes quite often
+
+#### 3 - Incremental static generation:-
+- feture of above two rendering using {next:{revalidate:10}}
+
+
+
+
+
+
+
+
