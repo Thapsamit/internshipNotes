@@ -66,6 +66,10 @@ sudo service docker start
 ```
 
 
+```bash
+sudo systemctl start docker
+```
+
 
 
 
