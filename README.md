@@ -59,6 +59,13 @@ Is isolated from other containers and runs its own software, binaries, and confi
 
 
 
+# To check docker running or not
+```bash
+docker info
+
+```
+
+
 ## for running in ubuntu:-
 
 ```bash
