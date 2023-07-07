@@ -77,6 +77,11 @@ sudo service docker start
 sudo systemctl start docker
 ```
 
+TO check status of docker
+```bash
+sudo systemctl status docker
+
+```
 
 # to build
 ```bash
