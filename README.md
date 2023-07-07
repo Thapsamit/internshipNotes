@@ -92,6 +92,22 @@ sudo systemctl status docker
 docker run -p <HOST_PORT>:<CONTAINER_PORT> your-image-name
 ```
 
+# To View running docker containers in aws ubuntu instance
+
+```bash
+docker ps
+```
+
+# To stop the running container in aws ubuntu instance
+```bash
+docker stop <container_id/name>
+
+example
+
+docker stop nodedocker
+```
+
+
 
 
 
