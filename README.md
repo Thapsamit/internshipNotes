@@ -108,6 +108,10 @@ docker stop nodedocker
 ```
 
 
+### To list all the docker images
+```bash
+docker images
+```
 
 
 
