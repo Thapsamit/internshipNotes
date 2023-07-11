@@ -2,7 +2,7 @@
 
 ### Folder structure for angular
 
-
+``` bash
 src
 |-- app
     |-- core
@@ -44,3 +44,10 @@ src
 |-- assets                (static assets: images, fonts, etc.)
 |-- environments          (environment-specific configurations)
 |-- styles                (global styles, SCSS files)
+
+```
+
+
+
+
+
