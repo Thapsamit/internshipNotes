@@ -115,6 +115,36 @@ docker images
 
 
 
+## How to run commands like python manage.py shell if the project is running in docker
+
+- Get container
+```bash
+docker ps
+```
+- Exec docker exec command
+```bash
+docker exec -it <container_id_or_name> bash
+
+
+```
+
+- Go to main app
+
+```bash
+cd /usr/src/app/
+
+```
+
+- run shell
+```bash
+python manage.py shell
+```
+
+
+
+
+
+
 
 
 
