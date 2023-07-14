@@ -34,3 +34,10 @@ sudo yum install -y python3
 sudo -i -u postgres
 ```
 
+how to know pm2 process is running on which port ?
+- sudo lsof -i -P -n | grep LISTEN
+
+
+
+
+
