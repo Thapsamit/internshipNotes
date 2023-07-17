@@ -27,6 +27,9 @@ sudo apt-get install gitlab-runner
 
    - Click on the "Settings" tab within the project.
 
+- Add tags to the gitlab runner
+- create and get url and token
+
    - In the left sidebar, select "CI/CD".
 
    - Scroll down to the "Runners" section and look for the "Specific Runners" or "Shared Runners" settings, depending on your setup.
