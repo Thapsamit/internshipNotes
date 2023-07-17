@@ -29,6 +29,7 @@ sudo apt-get install gitlab-runner
 
 - Add tags to the gitlab runner
 - create and get url and token
+- Enter the executor like ssh, docker etc means where the gitlab runner will run
 
    - In the left sidebar, select "CI/CD".
 
