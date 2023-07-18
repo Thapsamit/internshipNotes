@@ -116,8 +116,10 @@ nano .ssh/authorized_keys
 
 
 
-
-
+### How to open mysql in aws ec2 ubuntu
+```bash
+mysql -h localhost -u root -p
+```
 
 
 
