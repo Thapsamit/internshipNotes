@@ -98,6 +98,51 @@ You can explore these repositories to find the source code, documentation, and c
 
 
 
+### TECH STACK
+
+
+Based on your requirements, here's a suggested tech stack:
+
+Frontend:
+
+Angular or React for building the web application user interface.
+Socket.io for real-time communication features like chat and live interaction during classes.
+Miro API integration for the interactive whiteboard and drawing capabilities.
+Backend:
+
+Node.js with Express.js or Django for handling the server-side logic.
+MongoDB or PostgreSQL for the database to store class recordings, user data, and other relevant information.
+Nginx or Apache for handling the video streaming and serving static files.
+FFmpeg for video encoding and recording video streams.
+Video Streaming:
+
+WebRTC for live video streaming between the teacher and students during classes.
+MediaSoup or Janus as WebRTC media servers to handle the video streams.
+Notifications:
+
+Use Twilio or Nexmo API for sending SMS notifications to students before class.
+Use an email service like SendGrid or AWS SES for sending email notifications.
+Authentication & Authorization:
+
+Use JWT (JSON Web Tokens) for authentication and authorization of users.
+Passport.js for handling user authentication in Node.js.
+Scheduling & Calendar:
+
+Use a scheduling library like FullCalendar for managing live class schedules.
+Moment.js or Date-fns for date and time manipulation.
+Feedback & Rating System:
+
+Implement a rating system where students can provide feedback and rate the classes.
+Store the ratings and feedback in the database.
+Single Sign-On (SSO):
+
+Implement SSO for seamless login between the main website and the video portal.
+Cost & Scalability:
+
+Consider using cloud-based services like AWS or Google Cloud for hosting and scaling the application as per the user load.
+Note: This is just a suggested tech stack based on the requirements you provided. Depending on the specific needs of your application and your team's expertise, you may make adjustments or explore other technologies that suit your project better. Additionally, it's always good to conduct a detailed feasibility study and evaluate the pros and cons of each technology before finalizing the tech stack for your project.
+
+
 
 
 
