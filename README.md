@@ -79,12 +79,15 @@ This is just a basic outline of the database architecture. Depending on your spe
 
 
 
+#### Open source project 
 
 
-
-
-
-
+BigBlueButton: https://github.com/bigbluebutton/bigbluebutton
+Jitsi: https://github.com/jitsi/jitsi
+Open edX: https://github.com/edx/edx-platform
+Moodle: https://github.com/moodle/moodle
+Mediasoup: https://github.com/versatica/mediasoup
+You can explore these repositories to find the source code, documentation, and community discussions related to each project. Keep in mind that each project may have multiple repositories for different components and modules. Always refer to the official documentation provided in the repository for detailed instructions on installation, configuration, and usage.
 
 
 
