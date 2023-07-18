@@ -144,6 +144,31 @@ Note: This is just a suggested tech stack based on the requirements you provided
 
 
 
+### Real time communication 
+
+
+
+Using Socket.io is not a requirement for setting up a basic WebRTC-based live streaming platform. WebRTC itself provides the necessary real-time communication capabilities between the broadcaster (you) and the viewers. However, Socket.io can be beneficial in certain scenarios, depending on your specific requirements and use cases.
+
+Socket.io is a library that enables real-time, bidirectional communication between web clients and servers. It uses WebSocket as the primary transport protocol but also provides fallback options like long polling for browsers that do not support WebSocket.
+
+Here are some cases where Socket.io might be useful in your live streaming platform:
+
+Signaling Server: WebRTC requires a signaling server to exchange session information between participants before establishing a direct peer-to-peer connection. Socket.io can serve as the signaling server to facilitate this process.
+
+Chat and Interaction: If you want to implement real-time chat or interactive features between you and your viewers (e.g., questions, polls, etc.), Socket.io can be a convenient choice.
+
+Broadcast Status Updates: Socket.io can be used to notify viewers of changes in the live stream status, such as when the stream starts, stops, or experiences technical difficulties.
+
+Real-Time Analytics: If you need to gather real-time analytics or metrics about your live stream viewers, Socket.io can help you send this information back to the server in real-time.
+
+Cross-Browser Support: WebSocket is supported by most modern browsers, but some older browsers may not fully support it. Socket.io provides a fallback mechanism, making it easier to achieve cross-browser compatibility.
+
+Keep in mind that integrating Socket.io can add some complexity to your project, and it might not be necessary for a simple live streaming setup. If you're looking for basic real-time video streaming without interactive features, WebRTC alone should suffice.
+
+However, if you have specific use cases that require real-time interactions and server-client communication beyond what WebRTC offers, Socket.io could be a valuable addition to your tech stack. Ultimately, the decision to use Socket.io depends on your project's requirements and your team's familiarity with the technology.
+
+
 
 
 
