@@ -170,6 +170,11 @@ However, if you have specific use cases that require real-time interactions and 
 
 
 
+#### Refer below for SFU
+
+- https://bloggeek.me/webrtcglossary/sfu/
+
+
 #### Strategy to allow 300 plus participants in the call?
 
 For a large-scale application with around 300+ participants, using a mesh architecture in WebRTC would not be the most efficient approach due to the limitations mentioned earlier (high bandwidth consumption, CPU usage, and scalability issues). Instead, you should consider using one of the following more scalable topologies:
