@@ -249,3 +249,46 @@ Properly handle errors and clean up resources, such as closing connections, when
 
 
 
+#### Chose from websocket or socket.io
+
+When choosing between WebSocket and Socket.io as a signaling server for your WebRTC application, there are several factors to consider based on your specific requirements and use case. Let's compare both options to help you make an informed decision:
+
+WebSocket:
+
+Real WebSocket Protocol:
+WebSocket is a standard protocol defined by the IETF (Internet Engineering Task Force). It provides a full-duplex communication channel over a single TCP connection, allowing low-latency, bidirectional communication between the client and server.
+
+Lightweight and Low Overhead:
+Since WebSocket is a low-level protocol, it has minimal overhead compared to higher-level libraries like Socket.io. This makes it suitable for scenarios where performance is critical.
+
+Simple and Direct Integration:
+Using WebSocket directly allows you to have more control over the signaling process. It's a great choice if you want a lightweight, custom solution tailored to your specific needs.
+
+Socket.io:
+
+WebSocket-Based but with Enhancements:
+Socket.io is built on top of WebSocket and provides additional features like fallbacks (e.g., long polling) for older browsers that don't support WebSocket, making it more resilient in environments with varying browser support.
+
+Real-Time Functionality:
+Socket.io simplifies real-time communication between clients and servers by handling the management of connections, rooms, broadcasting messages, and other real-time functionalities.
+
+Broad Browser Support:
+Socket.io works with a wide range of browsers, including older ones that may not have native WebSocket support.
+
+Choosing the Right Option:
+
+Performance vs. Ease of Use:
+If performance and low overhead are critical factors for your application, using WebSocket directly might be the better choice. If you prioritize ease of development and need real-time features like broadcasting, room management, and fallbacks, Socket.io provides a more convenient option.
+
+Browser Support:
+Consider the browsers you need to support. WebSocket has good native support in modern browsers, but if you need to cater to older browsers, Socket.io can handle fallbacks for non-WebSocket-capable browsers.
+
+Customization:
+If you need a highly customized signaling process or if you're building a custom signaling server, using WebSocket directly allows you to have more control over the implementation.
+
+Third-Party Services:
+If you prefer a hosted solution for signaling, there are third-party WebRTC signaling services available that use WebSocket or Socket.io. Evaluate their features, scalability, and pricing to see if they meet your requirements.
+
+
+
+
