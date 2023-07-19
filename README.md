@@ -194,7 +194,20 @@ In this hybrid approach, you can use a mesh-like topology for the data channels 
 
 
 
+#### Approach to use SFU - Selective forwarding Unit
 
+To implement an SFU, you would typically use media server libraries or platforms that provide SFU capabilities, such as:
+
+mediasoup: A popular media server library designed for WebRTC applications, including SFU functionality.
+
+GitHub: https://github.com/versatica/mediasoup
+Official Website: https://mediasoup.org/
+Janus Gateway: An open-source general-purpose WebRTC server with support for SFU, conferencing, and other real-time communication use cases.
+
+GitHub: https://github.com/meetecho/janus-gateway
+Kurento: An open-source WebRTC media server that provides SFU capabilities and additional media processing features.
+
+GitHub: https://github.com/Kurento/kurento-media-server
 
 
 
