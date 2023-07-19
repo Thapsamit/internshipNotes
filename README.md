@@ -170,6 +170,29 @@ However, if you have specific use cases that require real-time interactions and 
 
 
 
+#### Strategy to allow 300 plus participants in the call?
+
+For a large-scale application with around 300+ participants, using a mesh architecture in WebRTC would not be the most efficient approach due to the limitations mentioned earlier (high bandwidth consumption, CPU usage, and scalability issues). Instead, you should consider using one of the following more scalable topologies:
+
+Selective Forwarding Unit (SFU):
+In an SFU-based architecture, each participant sends their audio, video, and data streams to a centralized media server known as the SFU. The SFU then forwards the streams to all other participants. This approach significantly reduces the number of connections each participant needs to maintain and offloads much of the media handling to the server.
+
+Advantages:
+
+Lower bandwidth consumption: Each participant only sends one stream to the SFU.
+Reduced CPU usage: Participants only need to handle one outbound stream.
+Better scalability: SFUs are designed to handle a large number of participants efficiently.
+Multipoint Control Unit (MCU):
+An MCU is another type of centralized media server that mixes and forwards audio, video, and data streams. Unlike the SFU, the MCU actively processes and mixes the streams before sending them to the participants. This architecture works well for applications that require advanced media processing, such as video conferencing with dynamic layout changes.
+
+Advantages:
+
+Advanced media processing: The MCU can provide features like layout changes, screen sharing, and more.
+Centralized control: The MCU has full control over the media streams, enabling more fine-tuned manipulation.
+Peer-to-Peer Data Channels with SFU/ MCU for Media Streams:
+In this hybrid approach, you can use a mesh-like topology for the data channels (for non-media communication) between participants, while using an SFU or MCU for handling the media streams. This approach combines the benefits of both approaches and is commonly used in large-scale WebRTC applications.
+
+
 
 
 
