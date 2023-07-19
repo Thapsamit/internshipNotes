@@ -170,9 +170,7 @@ However, if you have specific use cases that require real-time interactions and 
 
 
 
-#### Refer below for SFU
 
-- https://bloggeek.me/webrtcglossary/sfu/
 
 
 #### Strategy to allow 300 plus participants in the call?
@@ -214,7 +212,9 @@ Kurento: An open-source WebRTC media server that provides SFU capabilities and a
 
 GitHub: https://github.com/Kurento/kurento-media-server
 
+#### Refer below for SFU
 
+- https://bloggeek.me/webrtcglossary/sfu/
 
 
 
