@@ -216,7 +216,35 @@ GitHub: https://github.com/Kurento/kurento-media-server
 
 - https://bloggeek.me/webrtcglossary/sfu/
 
+### Implement SFU 
 
+Using a Selective Forwarding Unit (SFU) involves setting up a media server that receives media streams from participants in a communication session and selectively forwards those streams to other participants. SFUs are commonly used in large-scale WebRTC applications to reduce bandwidth consumption and CPU load on clients.
+
+To use an SFU, you'll need to follow these general steps:
+
+Choose an SFU Library or Service:
+There are several SFU libraries and services available that provide SFU capabilities for WebRTC. Some popular options include mediasoup, janus-gateway, Kurento, and more. Choose one that best fits your requirements and tech stack.
+
+Set up the SFU Backend:
+Depending on the SFU library you choose, you'll need to set up the backend (media server) on your server infrastructure. This involves installing the necessary dependencies and configuring the media server.
+
+Implement Signaling:
+As with any WebRTC-based application, you'll need to implement signaling to exchange session metadata and negotiation messages between participants and the SFU. This could involve using WebSocket or Socket.io to facilitate communication between clients and the SFU backend.
+
+Handle Media Stream Negotiation:
+When participants join a session, you'll need to handle media stream negotiation between each participant and the SFU. This involves setting up RTCPeerConnection for each participant and exchanging SDPs and ICE candidates through the signaling channel.
+
+Send Media Streams to the SFU:
+Once participants establish WebRTC connections with the SFU, they will send their media streams (audio, video) to the SFU. The SFU will handle these media streams and manage their forwarding to other participants in the session.
+
+Receive Media Streams from the SFU:
+Similarly, participants will also receive media streams from the SFU, allowing them to view and hear the media streams of other participants in the session.
+
+Handle Data Channels (Optional):
+If you need to exchange additional data between participants, you can create WebRTC data channels on the connections between the clients and the SFU.
+
+Implement Error Handling and Clean-up:
+Properly handle errors and clean up resources, such as closing connections, when participants leave the session.
 
 
 
