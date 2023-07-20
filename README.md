@@ -320,18 +320,7 @@ Keep in mind that while Mediasoup is a powerful tool for building real-time comm
 Before choosing Mediasoup or any other media server solution, carefully consider your project's requirements, the complexity of the application, and the expertise of your development team. It's essential to evaluate different media server options to determine which one best fits your specific use case and technical needs.
 
 
-
-
-
-
-
-
-
-
-
 If you prefer a hosted solution for signaling, there are third-party WebRTC signaling services available that use WebSocket or Socket.io. Evaluate their features, scalability, and pricing to see if they meet your requirements.
-
-
 
 
 
