@@ -287,6 +287,48 @@ Customization:
 If you need a highly customized signaling process or if you're building a custom signaling server, using WebSocket directly allows you to have more control over the implementation.
 
 Third-Party Services:
+
+
+
+
+
+### Why to use MediaSoup 
+
+
+Mediasoup is an open-source WebRTC media server that provides real-time communication capabilities for audio, video, and data streaming. It is designed to be highly flexible, scalable, and efficient, making it an excellent choice for building large-scale video conferencing, audio conferencing, or any real-time communication applications.
+
+Here are some key features and reasons to use Mediasoup:
+
+Scalability: Mediasoup is built on top of Node.js and uses modern WebRTC technologies. It employs a Selective Forwarding Unit (SFU) architecture, allowing it to scale efficiently to handle a large number of participants in a conference. It offloads the media processing tasks to the clients (participants), reducing the server's processing burden.
+
+Customizable and Lightweight: Mediasoup is designed to be modular and allows developers to customize its behavior to suit their specific use cases. You can choose to implement specific media processing logic or codecs based on your requirements, making it a lightweight and efficient solution.
+
+Support for Simulcast: Simulcast is a technique that allows sending multiple versions of the same video stream at different resolutions and bitrates. It enables Mediasoup to adapt to varying network conditions and device capabilities, providing a better video streaming experience.
+
+WebRTC Compliance: Mediasoup follows WebRTC specifications, ensuring compatibility with WebRTC-enabled browsers and clients. This makes it easy to integrate with various platforms and frameworks.
+
+Secure: Security is crucial for any real-time communication platform. Mediasoup has built-in mechanisms to handle secure communications and can be integrated with your existing authentication and authorization systems.
+
+Active Community: Mediasoup has an active and growing community of developers who contribute to its development and provide support through forums and other channels.
+
+Media Device Management: Mediasoup provides APIs for managing media devices (cameras, microphones, speakers) to give users control over their media input and output during a conference.
+
+Continuous Updates: The development of Mediasoup is ongoing, and updates are regularly released to improve performance, stability, and security.
+
+Keep in mind that while Mediasoup is a powerful tool for building real-time communication applications, it does require a good understanding of WebRTC and media server concepts. It may have a steeper learning curve compared to some other out-of-the-box solutions, but it offers greater flexibility and customization options.
+
+Before choosing Mediasoup or any other media server solution, carefully consider your project's requirements, the complexity of the application, and the expertise of your development team. It's essential to evaluate different media server options to determine which one best fits your specific use case and technical needs.
+
+
+
+
+
+
+
+
+
+
+
 If you prefer a hosted solution for signaling, there are third-party WebRTC signaling services available that use WebSocket or Socket.io. Evaluate their features, scalability, and pricing to see if they meet your requirements.
 
 
