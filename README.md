@@ -334,3 +334,83 @@ If you prefer a hosted solution for signaling, there are third-party WebRTC sign
 
 
 
+
+### How to use mediaSoup with nodejs 
+```js
+// server.js
+
+const express = require('express');
+const app = express();
+const http = require('http').createServer(app);
+const io = require('socket.io')(http);
+const mediasoup = require('mediasoup');
+
+const PORT = 3001;
+
+let worker; // Mediasoup worker
+let router; // Mediasoup router
+const producers = new Map(); // Store active producers
+
+(async () => {
+  worker = await mediasoup.createWorker();
+  const mediaCodecs = mediasoup.defaultRouterOptions.mediaCodecs;
+  router = await worker.createRouter({ mediaCodecs });
+
+  http.listen(PORT, () => {
+    console.log(`Server listening on port ${PORT}`);
+  });
+})();
+
+// Set up a WebSocket server using Socket.io
+io.on('connection', (socket) => {
+  socket.on('join', async (roomId, userId) => {
+    socket.join(roomId);
+
+    const transport = await router.createWebRtcTransport({
+      listenIps: [{ ip: '127.0.0.1', announcedIp: 'your-public-ip' }], // Replace 'your-public-ip' with your server's public IP
+      enableUdp: true,
+      enableTcp: true,
+    });
+
+    // Send the transport information back to the client
+    socket.emit('transportInfo', {
+      transportOptions: {
+        id: transport.id,
+        iceParameters: transport.iceParameters,
+        iceCandidates: transport.iceCandidates,
+        dtlsParameters: transport.dtlsParameters,
+      },
+    });
+
+    // Handle client disconnection
+    socket.on('disconnect', () => {
+      if (producers.has(userId)) {
+        const producer = producers.get(userId);
+        producer.close();
+        producers.delete(userId);
+
+        io.to(roomId).emit('userLeft', userId);
+      }
+    });
+
+    // Handle incoming media stream from the client
+    socket.on('produce', async (data) => {
+      const producer = await transport.produce({
+        kind: data.kind,
+        rtpParameters: data.rtpParameters,
+      });
+
+      producers.set(userId, producer);
+
+      // Send the producer ID back to the client
+      socket.emit('producerId', producer.id);
+
+      // Inform all other participants about the new producer
+      socket.to(roomId).emit('newRemoteProducer', producer.id);
+    });
+  });
+});
+```
+
+
+
