@@ -402,4 +402,8 @@ io.on('connection', (socket) => {
 ```
 
 
+## Media soup architecture
+
+![mediasoup](https://mediasoup.org/images/mediasoup-v3-architecture-01.svg)
+
 
