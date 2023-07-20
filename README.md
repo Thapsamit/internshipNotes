@@ -407,3 +407,142 @@ io.on('connection', (socket) => {
 ![mediasoup](https://mediasoup.org/images/mediasoup-v3-architecture-01.svg)
 
 
+
+### Media soup setup with nodejs
+
+```js
+// server.js
+
+const express = require('express');
+const app = express();
+const http = require('http').createServer(app);
+const io = require('socket.io')(http);
+const mediasoup = require('mediasoup');
+
+const PORT = 3001;
+
+let worker;
+let router;
+let producerTransport;
+const consumers = new Map();
+
+(async () => {
+  worker = await mediasoup.createWorker();
+  const mediaCodecs = mediasoup.defaultRouterOptions.mediaCodecs;
+  router = await worker.createRouter({ mediaCodecs });
+
+  http.listen(PORT, () => {
+    console.log(`Server listening on port ${PORT}`);
+  });
+})();
+
+io.on('connection', (socket) => {
+  socket.on('joinRoom', async (roomId) => {
+    try {
+      socket.join(roomId);
+
+      // Create a WebRTC transport for sending media
+      producerTransport = await router.createWebRtcTransport({
+        listenIps: [{ ip: '0.0.0.0', announcedIp: YOUR_PUBLIC_IP }], // Replace YOUR_PUBLIC_IP with your server's public IP
+        enableUdp: true,
+        enableTcp: true,
+      });
+
+      // Send the transport information back to the client
+      socket.emit('transportInfo', {
+        transportOptions: {
+          id: producerTransport.id,
+          iceParameters: producerTransport.iceParameters,
+          iceCandidates: producerTransport.iceCandidates,
+          dtlsParameters: producerTransport.dtlsParameters,
+        },
+      });
+    } catch (error) {
+      console.error('Error joining room:', error);
+    }
+  });
+
+  socket.on('produce', async (data) => {
+    try {
+      const { kind, rtpParameters } = data;
+
+      const producer = await producerTransport.produce({ kind, rtpParameters });
+      socket.emit('producerId', producer.id);
+
+      // Inform all other participants about the new producer
+      socket.to(socket.rooms).emit('newProducer', { producerId: producer.id, kind });
+    } catch (error) {
+      console.error('Error producing media:', error);
+    }
+  });
+
+  socket.on('consume', async (data) => {
+    try {
+      const { producerId, rtpCapabilities } = data;
+
+      if (!producerTransport) {
+        return;
+      }
+
+      const consumerTransport = await router.createWebRtcTransport({
+        listenIps: [{ ip: '0.0.0.0', announcedIp: YOUR_PUBLIC_IP }], // Replace YOUR_PUBLIC_IP with your server's public IP
+        enableUdp: true,
+        enableTcp: true,
+      });
+
+      const producer = await producerTransport.consume({
+        producerId,
+        rtpCapabilities,
+        paused: false,
+      });
+
+      const consumer = await consumerTransport.consume({
+        producerId: producer.id,
+        rtpCapabilities,
+        paused: false,
+      });
+
+      consumers.set(consumer.id, consumer);
+
+      // Send the transport information back to the client
+      socket.emit('consume', {
+        consumerId: consumer.id,
+        producerId: producer.id,
+        kind: producer.kind,
+        rtpParameters: consumer.rtpParameters,
+      });
+
+      consumer.on('transportclose', () => {
+        consumers.delete(consumer.id);
+      });
+    } catch (error) {
+      console.error('Error consuming media:', error);
+    }
+  });
+
+  socket.on('resume', (data) => {
+    const { consumerId } = data;
+    const consumer = consumers.get(consumerId);
+    if (consumer) {
+      consumer.resume();
+    }
+  });
+
+  socket.on('pause', (data) => {
+    const { consumerId } = data;
+    const consumer = consumers.get(consumerId);
+    if (consumer) {
+      consumer.pause();
+    }
+  });
+
+  socket.on('disconnect', () => {
+    // Handle client disconnection, cleanup, etc.
+  });
+});
+
+
+```
+
+
+
