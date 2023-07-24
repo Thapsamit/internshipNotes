@@ -548,7 +548,7 @@ io.on('connection', (socket) => {
 
 ### media soup basic setup node js
 
-```
+```js
 const express = require('express');
 const http = require('http');
 const socketIO = require('socket.io');
