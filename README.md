@@ -664,3 +664,23 @@ Support for Simulcast and SVC: In more advanced use cases, WebRTCTransport suppo
 
 In the context of mediasoup, when a client wants to send or receive media streams, it requests the server to create a WebRTCTransport. Once the transport is established, it can be used to send and receive media packets and handle the signaling required for establishing a WebRTC connection.
 
+
+
+### Send media stream from client to server
+
+--In the mediasoup-client library, the createSendTransport method is used to create a WebRTC transport for sending media streams from the client (sender) to the mediasoup server (SFU). This transport is often referred to as the "send transport" or "producer transport."
+
+Here's what the createSendTransport method does and why it's essential:
+
+Creates a Send Transport: The createSendTransport method creates a WebRTC transport optimized for sending media streams. It is specifically designed for producers who want to send their audio and video streams to the mediasoup server.
+
+ICE and DTLS Setup: The transport information received from the server during the joinRoom process contains ICE candidates and DTLS parameters. These parameters are used to set up the ICE (Interactive Connectivity Establishment) and DTLS (Datagram Transport Layer Security) components of the WebRTC connection.
+
+Candidate Gathering: The transport automatically starts gathering local ICE candidates, which are network addresses that the client can use to communicate with the server. The ICE gathering process finds the best network path for establishing a direct peer-to-peer connection or traversing NAT/firewall devices.
+
+Encrypted Communication: The transport uses DTLS to establish a secure encrypted communication channel between the client and the mediasoup server. DTLS ensures that the media streams are transmitted securely over the internet.
+
+Media Stream Production: Once the createSendTransport method is called and the transport is set up, the client can use the transport to produce media streams from its microphone and camera. These media streams are then sent to the mediasoup server, which acts as an SFU and forwards the streams to other participants in the room.
+
+
+
