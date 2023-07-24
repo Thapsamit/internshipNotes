@@ -682,5 +682,48 @@ Encrypted Communication: The transport uses DTLS to establish a secure encrypted
 
 Media Stream Production: Once the createSendTransport method is called and the transport is set up, the client can use the transport to produce media streams from its microphone and camera. These media streams are then sent to the mediasoup server, which acts as an SFU and forwards the streams to other participants in the room.
 
+### Creating Transport 
+
+Creating Transports
+Both mediasoup-client and libmediasoupclient need separate WebRTC transports for sending and receiving. Typically, the client application creates those transports in advance, before even wishing to send or receive media.
+
+For sending media:
+
+A WebRTC transport must be first created in the mediasoup router: router.createWebRtcTransport().
+And then replicated in the client side application: device.createSendTransport().
+The client application must subscribe to the “connect” and “produce” events in the local transport.
+For receiving media:
+
+A WebRTC transport must be first created in the mediasoup router: router.createWebRtcTransport().
+And then replicated in the client side application: device.createRecvTransport().
+The client application must subscribe to the “connect” event in the local transport.
+If SCTP (AKA DataChannel in WebRTC) are desired on those transports, enableSctp must be enabled in them (with proper numSctpStreams) and other SCTP related settings
 
 
+### Producing Media
+
+
+Producing Media
+Once the send transport is created, the client side application can produce multiple audio and video tracks on it.
+
+The application obtains a track (e.g. by using the navigator.mediaDevices.getUserMedia() API).
+It calls transport.produce() in the local send transport.
+The transport will emit “connect” if this is the first call to transport.produce().
+The transport will emit “produce” so the application will transmit the event parameters to the server and will create a Producer instance in server side.
+Finally transport.produce() will resolve with a Producer instance in client side
+
+
+
+
+### Consumer Media 
+
+Consuming Media
+Once the receive transport is created, the client side application can consume multiple audio and video tracks on it. However the order is the opposite (here the consumer must be created in the server first).
+
+The client application signals its device.rtpCapabilities to the server (it may have done it in advance).
+The server application should check whether the remote device can consume a specific producer (this is, whether it supports the producer media codecs). It can do it by using the router.canConsume() method.
+Then the server application calls transport.consume() in the WebRTC transport the client created for receiving media, thus generating a server side Consumer.
+As explained in the transport.consume() documentation, it's strongly recommended to create the server side consumer with paused: true and resume it once created in the remote endpoint.
+The server application transmits the consumer information and parameters to the remote client application, which calls transport.consume() in the local receive transport.
+The transport will emit “connect” if this is the first call to transport.consume().
+Finally transport.consume() will resolve with a Consumer instance in client side
