@@ -643,4 +643,24 @@ server.listen(port, () => {
 ```
 
 
+### Why webRTC transport required of media soup?
+
+
+mediasoup WebRTCTransport is a crucial component in WebRTC-based media server applications like mediasoup. It serves as a transport channel that facilitates real-time communication between a WebRTC endpoint (such as a web browser) and the media server. WebRTCTransport is an essential part of the WebRTC media handling process and is needed for several reasons:
+
+Media Stream Transport: WebRTCTransport is responsible for transporting media streams, including audio and video, between the client (web browser) and the media server. It handles the secure and reliable transmission of Real-Time Transport Protocol (RTP) and Real-Time Control Protocol (RTCP) packets over the network.
+
+ICE Candidate Exchange: WebRTCTransport assists in the exchange of Interactive Connectivity Establishment (ICE) candidates between the client and the media server. ICE candidates help establish a direct peer-to-peer connection between clients, enabling them to find the best network path for media communication.
+
+DTLS Handshake: WebRTCTransport performs the Datagram Transport Layer Security (DTLS) handshake, which is an essential part of the WebRTC connection setup process. DTLS establishes secure encryption and authentication for media streams.
+
+NAT Traversal: WebRTCTransport helps in Network Address Translation (NAT) traversal, allowing clients behind firewalls or NAT routers to establish a direct connection with the media server, even in complex network environments.
+
+Secure Data Transmission: WebRTCTransport ensures that media streams and other data are transmitted securely over the internet, protecting them from unauthorized access and tampering.
+
+Connection Management: WebRTCTransport handles the state of the connection, including its opening, closing, and any state changes that occur during the communication session.
+
+Support for Simulcast and SVC: In more advanced use cases, WebRTCTransport supports Simulcast and Scalable Video Coding (SVC), allowing the media server to adapt the video quality based on the client's capabilities and network conditions.
+
+In the context of mediasoup, when a client wants to send or receive media streams, it requests the server to create a WebRTCTransport. Once the transport is established, it can be used to send and receive media packets and handle the signaling required for establishing a WebRTC connection.
 
