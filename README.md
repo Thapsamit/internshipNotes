@@ -546,3 +546,101 @@ io.on('connection', (socket) => {
 
 
 
+### media soup basic setup node js
+
+```
+const express = require('express');
+const http = require('http');
+const socketIO = require('socket.io');
+const mediasoup = require('mediasoup');
+
+const app = express();
+const server = http.createServer(app);
+const io = socketIO(server);
+
+const mediaCodecs = [
+  {
+    kind: 'audio',
+    mimeType: 'audio/opus',
+    clockRate: 48000,
+    channels: 2,
+  },
+  {
+    kind: 'video',
+    mimeType: 'video/VP8',
+    clockRate: 90000,
+    parameters: {
+      'x-google-start-bitrate': 1000,
+    },
+  },
+];
+
+let worker;
+let router;
+
+(async () => {
+  worker = await mediasoup.createWorker({
+    logLevel: 'warn',
+    rtcMinPort: 10000,
+    rtcMaxPort: 10100,
+  });
+
+  const mediaCodecsRouter = mediaCodecs.map((codec) => ({
+    ...codec,
+    remoteRtpCapabilities: worker.rtpCapabilities,
+  }));
+
+  router = await mediasoup.createRouter({ mediaCodecs: mediaCodecsRouter });
+})();
+
+io.on('connection', (socket) => {
+  console.log('Client connected');
+
+  socket.on('getRouterRtpCapabilities', (data, callback) => {
+    callback(router.rtpCapabilities);
+  });
+
+  socket.on('createWebRtcTransport', async (data, callback) => {
+    const { direction } = data;
+    const transport = await router.createWebRtcTransport({ listenIps: ['127.0.0.1'] });
+
+    transport.on('dtlsstatechange', (event) => {
+      if (event.dtlsState === 'closed') {
+        transport.close();
+      }
+    });
+
+    callback({
+      transportOptions: {
+        id: transport.id,
+        iceParameters: transport.iceParameters,
+        iceCandidates: transport.iceCandidates,
+        dtlsParameters: transport.dtlsParameters,
+      },
+    });
+  });
+
+  socket.on('connectTransport', async (data, callback) => {
+    const { transportId, dtlsParameters } = data;
+    const transport = router.getTransportById(transportId);
+    if (!transport) {
+      console.error('Transport not found');
+      return callback({ error: 'Transport not found' });
+    }
+
+    await transport.connect({ dtlsParameters });
+
+    callback({ connected: true });
+  });
+});
+
+const port = 3000;
+server.listen(port, () => {
+  console.log(`Server running on http://localhost:${port}`);
+});
+
+
+```
+
+
+
