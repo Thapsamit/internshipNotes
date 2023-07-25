@@ -1109,3 +1109,42 @@ function App() {
 
 In the SFU (Selective Forwarding Unit) architecture, you create a WebRTC transport for each participant in the room when they join the room. This transport is used to send and receive media streams between the server and the participant. The createWebRtcTransport function is called on the server-side when a new participant joins the room, allowing them to establish a WebRTC connection with the server for media exchange.
 
+
+### why we need to create and connect producer transport?
+
+In the SFU (Selective Forwarding Unit) architecture, the producer transport is responsible for sending media streams (e.g., audio and video) from the user's device to the SFU server. It acts as the outbound communication channel for the user's media.
+
+We need to create and connect the producer transport for the following reasons:
+
+Media Publishing: The producer transport is essential for enabling the user to publish their media streams to the SFU server. When a user wants to start streaming their audio and video to the room, a producer transport needs to be created so that their media can be sent to the SFU server.
+
+SFU Forwarding: Once the media is captured by the user's device, it is sent through the producer transport to the SFU server. The SFU server acts as an intermediary, forwarding the media to all other participants in the room. Each participant, including the original sender, receives the media from the SFU server.
+
+Scalability: The SFU architecture is designed for scalability, where the server is responsible for forwarding media streams between participants. By using producer transports, the SFU server can efficiently manage media distribution without the need for direct peer-to-peer connections between participants. This allows for better handling of large-scale group video conferences.
+
+Adaptability: The producer transport provides a way to handle changes in the user's media, such as resolution, codecs, or bandwidth. If the user's device encounters changes in network conditions or device capabilities, the producer transport can adapt and adjust the media transmission accordingly.
+
+In summary, the producer transport is necessary for sending media streams from the user's device to the SFU server in an SFU architecture. It enables media publishing, allows the SFU server to forward media to all participants, and ensures scalability and adaptability in group video conferencing scenarios.
+
+
+### why we need to create and connect consumer transport?
+
+
+
+In the SFU (Selective Forwarding Unit) architecture, the consumer transport is responsible for receiving media streams from other participants in the room. It acts as the inbound communication channel for the user's device to receive media.
+
+We need to create and connect the consumer transport for the following reasons:
+
+Media Subscribing: The consumer transport is essential for enabling the user's device to subscribe to media streams from other participants in the room. When a user joins a room and wants to view/hear media from other participants, a consumer transport needs to be created so that their device can receive media from the SFU server.
+
+SFU Forwarding: In the SFU architecture, the SFU server acts as an intermediary that receives media streams from each participant and selectively forwards them to other participants. When a user subscribes to a media stream, the SFU server sends that media stream to the user's device through the consumer transport.
+
+Scalability: The consumer transport allows the SFU server to manage media distribution efficiently. By using consumer transports, the SFU server can deliver media streams to multiple users without requiring direct peer-to-peer connections between participants. This enables the SFU architecture to handle large-scale group video conferences.
+
+Media Handling: The consumer transport allows the user's device to receive media streams in a controlled manner. It provides mechanisms for handling media reception, buffering, and adaptation based on network conditions and device capabilities.
+
+Selective Subscribing: In the SFU architecture, each user can selectively subscribe to specific media streams based on their preferences. For example, a user may choose to subscribe to audio streams only or video streams from specific participants. The consumer transport facilitates this selective subscribing process.
+
+In summary, the consumer transport is necessary for receiving media streams from other participants in the room in an SFU architecture. It enables media subscribing, allows the SFU server to forward media streams to the user's device, ensures scalability in group video conferencing scenarios, and provides mechanisms for handling media reception and adaptation.
+
+
