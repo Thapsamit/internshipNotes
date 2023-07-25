@@ -835,7 +835,76 @@ httpServer.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
 
+
+
 ```
+
+### create room join room 
+
+
+```js
+
+
+// server.js
+
+// ... (previous code)
+
+const rooms = new Map();
+
+io.on('connection', (socket) => {
+  socket.on('createRoom', async (roomId, callback) => {
+    if (rooms.has(roomId)) {
+      callback({ error: 'Room already exists' });
+      return;
+    }
+
+    rooms.set(roomId, {
+      peers: new Map(),
+    });
+
+    const rtpCapabilities = router.rtpCapabilities;
+    callback({ roomId, rtpCapabilities });
+  });
+
+  socket.on('joinRoom', async (roomId, userId, callback) => {
+    const room = rooms.get(roomId);
+    if (!room) {
+      callback({ error: 'Room not found' });
+      return;
+    }
+
+    const transport = await router.createWebRtcTransport();
+    room.peers.set(userId, {
+      socketId: socket.id,
+      transport,
+      consumers: new Map(),
+    });
+
+    const transportOptions = {
+      id: transport.id,
+      iceParameters: transport.iceParameters,
+      iceCandidates: transport.iceCandidates,
+      dtlsParameters: transport.dtlsParameters,
+    };
+
+    callback({ peers: Array.from(room.peers.keys()), transportOptions });
+
+    socket.on('disconnect', () => {
+      const peer = room.peers.get(userId);
+      if (peer) {
+        peer.transport.close();
+        room.peers.delete(userId);
+        removeConsumers(room, userId);
+        io.to(roomId).emit('peerLeft', userId);
+      }
+    });
+  });
+
+  // ... (previous code)
+});
+```
+
+
 
 
 
