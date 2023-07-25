@@ -1060,17 +1060,16 @@ function App() {
   // ... (previous code)
 
   const createRoom = () => {
-    if (roomId) {
-      socket.emit('createRoom', roomId, (response) => {
-        if (response.error) {
-          console.error('Error creating room:', response.error);
-        } else {
-          console.log('Room created:', response.roomId);
-          initializeProducerTransport();
-          initializeConsumerTransport();
-        }
-      });
-    }
+   socket.emit('createRoom', (response) => {
+      if (response.error) {
+        console.error('Error creating room:', response.error);
+      } else {
+        console.log('Room created:', response.roomId);
+        setRoomId(response.roomId);
+        initializeProducerTransport();
+        initializeConsumerTransport();
+      }
+    });
   };
 
   const joinRoom = () => {
