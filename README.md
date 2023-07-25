@@ -727,3 +727,116 @@ As explained in the transport.consume() documentation, it's strongly recommended
 The server application transmits the consumer information and parameters to the remote client application, which calls transport.consume() in the local receive transport.
 The transport will emit “connect” if this is the first call to transport.consume().
 Finally transport.consume() will resolve with a Consumer instance in client side
+
+
+
+
+### Node js server code for consume, produce,
+
+```js
+
+// server.js
+const express = require('express');
+const http = require('http');
+const { Server } = require('socket.io');
+const mediasoup = require('mediasoup');
+
+const app = express();
+const httpServer = http.createServer(app);
+const io = new Server(httpServer);
+
+const PORT = process.env.PORT || 3001;
+
+let worker;
+let router;
+const producers = new Map();
+
+(async () => {
+  worker = await mediasoup.createWorker();
+  const mediaCodecs = mediasoup.getSupportedRtpCapabilities().codecs;
+  router = await worker.createRouter({ mediaCodecs });
+})();
+
+io.on('connection', (socket) => {
+  socket.on('createProducerTransport', async (_, callback) => {
+    const transport = await router.createWebRtcTransport({ listenIps: [{ ip: '0.0.0.0', announcedIp: 'your-public-ip' }] });
+    producers.set(transport.id, transport);
+    const params = {
+      id: transport.id,
+      iceParameters: transport.iceParameters,
+      iceCandidates: transport.iceCandidates,
+      dtlsParameters: transport.dtlsParameters,
+    };
+    callback(params);
+  });
+
+  socket.on('connectProducerTransport', async ({ transportId, dtlsParameters }, callback) => {
+    const transport = producers.get(transportId);
+    if (!transport) {
+      callback({ error: 'Producer transport not found' });
+      return;
+    }
+
+    await transport.connect({ dtlsParameters });
+    callback({});
+  });
+
+  socket.on('produce', async ({ transportId, kind, rtpParameters }, callback) => {
+    const transport = producers.get(transportId);
+    if (!transport) {
+      callback({ error: 'Producer transport not found' });
+      return;
+    }
+
+    const producer = await transport.produce({ kind, rtpParameters });
+    callback({ id: producer.id });
+  });
+
+  socket.on('createConsumerTransport', async (_, callback) => {
+    const transport = await router.createWebRtcTransport({ listenIps: [{ ip: '0.0.0.0', announcedIp: 'your-public-ip' }] });
+    const params = {
+      id: transport.id,
+      iceParameters: transport.iceParameters,
+      iceCandidates: transport.iceCandidates,
+      dtlsParameters: transport.dtlsParameters,
+    };
+    callback(params);
+  });
+
+  socket.on('connectConsumerTransport', async ({ transportId, dtlsParameters }, callback) => {
+    const transport = consumers.get(transportId);
+    if (!transport) {
+      callback({ error: 'Consumer transport not found' });
+      return;
+    }
+
+    await transport.connect({ dtlsParameters });
+    callback({});
+  });
+
+  socket.on('consume', async ({ transportId, producerId, rtpCapabilities }, callback) => {
+    const transport = consumers.get(transportId);
+    if (!transport) {
+      callback({ error: 'Consumer transport not found' });
+      return;
+    }
+
+    if (!router.canConsume({ producerId, rtpCapabilities })) {
+      callback({ error: 'Cannot consume this producer' });
+      return;
+    }
+
+    const consumer = await transport.consume({ producerId, rtpCapabilities });
+    callback({ id: consumer.id, kind: consumer.kind, rtpParameters: consumer.rtpParameters });
+  });
+});
+
+httpServer.listen(PORT, () => {
+  console.log(`Server is running on http://localhost:${PORT}`);
+});
+
+```
+
+
+
+
