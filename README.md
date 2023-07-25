@@ -1105,5 +1105,7 @@ function App() {
 // ... (previous code)
 ```
 
+#### WHy createwebrtctransport required
 
+In the SFU (Selective Forwarding Unit) architecture, you create a WebRTC transport for each participant in the room when they join the room. This transport is used to send and receive media streams between the server and the participant. The createWebRtcTransport function is called on the server-side when a new participant joins the room, allowing them to establish a WebRTC connection with the server for media exchange.
 
