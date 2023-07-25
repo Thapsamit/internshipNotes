@@ -852,7 +852,7 @@ httpServer.listen(PORT, () => {
 const rooms = new Map();
 
 io.on('connection', (socket) => {
-  socket.on('createRoom', async (roomId, callback) => {
+  socket.on('createRoom', async (callback) => {
     const roomId = generateUniqueId(); // Function to generate a unique Room ID
     if (rooms.has(roomId)) {
       callback({ error: 'Room already exists' });
