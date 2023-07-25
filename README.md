@@ -1047,6 +1047,63 @@ export default App;
 
 ```
 
+### Create room join room 
+
+```js
+
+// App.js
+
+// ... (previous code)
+
+function App() {
+  // ... (previous code)
+
+  const createRoom = () => {
+    if (roomId) {
+      socket.emit('createRoom', roomId, (response) => {
+        if (response.error) {
+          console.error('Error creating room:', response.error);
+        } else {
+          console.log('Room created:', response.roomId);
+          initializeProducerTransport();
+          initializeConsumerTransport();
+        }
+      });
+    }
+  };
+
+  const joinRoom = () => {
+    if (roomId && userId) {
+      socket.emit('joinRoom', roomId, userId, (response) => {
+        if (response.error) {
+          console.error('Error joining room:', response.error);
+        } else {
+          console.log('Joined room:', roomId);
+          setPeers(response.peers);
+          initializeProducerTransport();
+          initializeConsumerTransport();
+        }
+      });
+    }
+  };
+
+  return (
+    <div>
+      <input
+        type="text"
+        value={roomId}
+        onChange={(e) => setRoomId(e.target.value)}
+        placeholder="Enter Room ID"
+      />
+      <button onClick={createRoom}>Create Room</button>
+      <button onClick={joinRoom}>Join Room</button>
+      {/* ... (previous code) */}
+    </div>
+  );
+}
+
+// ... (previous code)
+```
 
 
 
