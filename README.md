@@ -904,7 +904,148 @@ io.on('connection', (socket) => {
 });
 ```
 
+### React code
 
+```js
+
+// App.js
+import React, { useEffect, useRef, useState } from 'react';
+import io from 'socket.io-client';
+import { Device } from 'mediasoup-client';
+
+const socket = io('http://localhost:3001'); // Replace with your server URL
+
+function App() {
+  const videoRef = useRef();
+  const [roomId, setRoomId] = useState('');
+  const [userId, setUserId] = useState('');
+  const [producerTransport, setProducerTransport] = useState(null);
+  const [consumerTransport, setConsumerTransport] = useState(null);
+  const [producer, setProducer] = useState(null);
+  const [consumers, setConsumers] = useState([]);
+
+  useEffect(() => {
+    socket.on('connect', () => {
+      setUserId(socket.id);
+    });
+
+    socket.on('newProducer', handleNewProducer);
+    socket.on('newConsumer', handleNewConsumer);
+
+    return () => {
+      socket.off('newProducer', handleNewProducer);
+      socket.off('newConsumer', handleNewConsumer);
+    };
+  }, []);
+
+  const handleNewProducer = async (producerData) => {
+    const consumer = await createConsumer(producerData);
+    setConsumers((prevConsumers) => [...prevConsumers, consumer]);
+  };
+
+  const handleNewConsumer = (consumerData) => {
+    // Handle new consumer, if needed
+  };
+
+  const createConsumer = async (producerData) => {
+    const { id, kind, rtpParameters } = producerData;
+
+    const transportId = consumerTransport.id;
+    const { id: consumerId, kind: consumerKind, rtpParameters: consumerRtpParameters } = await sendRequest(
+      'consume',
+      { transportId, producerId: id, rtpCapabilities: device.rtpCapabilities }
+    );
+
+    const consumer = await consumerTransport.consume({
+      id: consumerId,
+      producerId: id,
+      kind,
+      rtpParameters: consumerRtpParameters,
+    });
+
+    return consumer;
+  };
+
+  const sendRequest = async (type, data) => {
+    return new Promise((resolve) => {
+      socket.emit(type, data, (response) => {
+        if (response.error) {
+          console.error(`Error in ${type}: ${response.error}`);
+          return resolve(null);
+        }
+
+        resolve(response);
+      });
+    });
+  };
+
+  const initializeProducerTransport = async () => {
+    const { id, iceParameters, iceCandidates, dtlsParameters } = await sendRequest('createProducerTransport', {});
+    const transport = device.createSendTransport({
+      id,
+      iceParameters,
+      iceCandidates,
+      dtlsParameters,
+    });
+
+    transport.on('connect', async ({ dtlsParameters }, callback, errback) => {
+      sendRequest('connectProducerTransport', { transportId: id, dtlsParameters }, callback);
+    });
+
+    setProducerTransport(transport);
+  };
+
+  const initializeConsumerTransport = async () => {
+    const { id, iceParameters, iceCandidates, dtlsParameters } = await sendRequest('createConsumerTransport', {});
+    const transport = device.createRecvTransport({
+      id,
+      iceParameters,
+      iceCandidates,
+      dtlsParameters,
+    });
+
+    transport.on('connect', async ({ dtlsParameters }, callback, errback) => {
+      sendRequest('connectConsumerTransport', { transportId: id, dtlsParameters }, callback);
+    });
+
+    setConsumerTransport(transport);
+  };
+
+  const startProducing = async () => {
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: true });
+    videoRef.current.srcObject = stream;
+
+    const { id, kind, rtpParameters } = await producerTransport.produce({
+      track: stream.getVideoTracks()[0],
+    });
+
+    setProducer({ id, kind, rtpParameters });
+  };
+
+  return (
+    <div>
+      <input
+        type="text"
+        value={roomId}
+        onChange={(e) => setRoomId(e.target.value)}
+        placeholder="Enter Room ID"
+      />
+      <button onClick={initializeProducerTransport}>Initialize Producer Transport</button>
+      <button onClick={initializeConsumerTransport}>Initialize Consumer Transport</button>
+      <button onClick={startProducing}>Start Producing</button>
+      <video ref={videoRef} autoPlay playsInline muted />
+      {consumers.map((consumer) => (
+        <video key={consumer.id} autoPlay playsInline ref={(video) => (video.srcObject = consumer.track.stream)} />
+      ))}
+    </div>
+  );
+}
+
+const device = new Device();
+
+export default App;
+
+```
 
 
 
