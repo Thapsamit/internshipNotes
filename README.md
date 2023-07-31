@@ -1145,6 +1145,131 @@ Media Handling: The consumer transport allows the user's device to receive media
 
 Selective Subscribing: In the SFU architecture, each user can selectively subscribe to specific media streams based on their preferences. For example, a user may choose to subscribe to audio streams only or video streams from specific participants. The consumer transport facilitates this selective subscribing process.
 
+
+
+
+
+
+
+
+### How to handle emoji ?
+
+
+import React, { useState, useRef } from 'react';
+import EmojiPicker from 'emoji-picker-react';
+
+const LiveStreamApp = () => {
+  const [chosenEmojis, setChosenEmojis] = useState([]);
+  const inputRef = useRef(null);
+
+  const handleEmojiClick = (event, emojiObject) => {
+    const emoji = emojiObject.emoji;
+    insertAtCursor(emoji);
+  };
+
+  const insertAtCursor = (emoji) => {
+    const input = inputRef.current;
+    const start = input.selectionStart;
+    const end = input.selectionEnd;
+    const value = input.value;
+
+    const newValue = value.substring(0, start) + emoji + value.substring(end);
+    setChosenEmojis((prevEmojis) => [...prevEmojis, emoji]);
+    input.focus();
+    input.value = newValue;
+    input.setSelectionRange(start + emoji.length, start + emoji.length);
+  };
+
+  const handleBackspace = (e) => {
+    if (e.key === 'Backspace') {
+      const input = inputRef.current;
+      const start = input.selectionStart;
+      const end = input.selectionEnd;
+      const value = input.value;
+
+      if (start === end && start > 0) {
+        // If the selection is collapsed and the cursor is not at the beginning
+        const emojiToRemove = value.substring(start - 2, start);
+        const newValue = value.substring(0, start - 2) + value.substring(start);
+        setChosenEmojis((prevEmojis) => prevEmojis.filter((emoji) => emoji !== emojiToRemove));
+        input.value = newValue;
+        input.setSelectionRange(start - 2, start - 2);
+      } else if (start !== end) {
+        // If there is a selected range of text
+        const newValue = value.substring(0, start) + value.substring(end);
+        setChosenEmojis((prevEmojis) => {
+          const emojisToRemove = value.substring(start, end).match(/[\uD800-\uDBFF][\uDC00-\uDFFF]|./g);
+          return prevEmojis.filter((emoji) => !emojisToRemove.includes(emoji));
+        });
+        input.value = newValue;
+        input.setSelectionRange(start, start);
+      }
+    }
+  };
+
+  const handleSentChatMessage = (e) => {
+    if (e.key === 'Enter') {
+      const message = e.target.value;
+      // Here, you can send the message (including emojis) to the server using your WebSocket implementation
+      console.log('Sending message:', message);
+      setChosenEmojis([]);
+      inputRef.current.value = '';
+    }
+  };
+
+  return (
+    <div>
+      <h1>Live Stream</h1>
+      <div className="emoji-picker">
+        {/* Render the EmojiPicker component */}
+        <EmojiPicker onEmojiClick={handleEmojiClick} />
+      </div>
+      <div className="chosen-emojis">
+        {chosenEmojis.map((emoji, index) => (
+          <span key={index} onClick={() => handleRemoveEmoji(index)}>
+            {emoji}
+          </span>
+        ))}
+      </div>
+      <div
+        className="input-wrapper"
+        ref={inputRef}
+        contentEditable
+        onInput={(e) => {
+          setChosenEmojis(getEmojisFromContentEditable(e.currentTarget));
+          // Clear the input value to avoid duplicating content
+          e.currentTarget.textContent = '';
+        }}
+        onKeyDown={handleBackspace}
+        onPaste={(e) => {
+          e.preventDefault();
+          const text = e.clipboardData.getData('text/plain');
+          document.execCommand('insertText', false, text);
+        }}
+      ></div>
+    </div>
+  );
+};
+
+const getEmojisFromContentEditable = (element) => {
+  const emojis = element.innerText.match(/[\uD800-\uDBFF][\uDC00-\uDFFF]|./g);
+  return emojis ? emojis.filter((char) => char.length === 2) : [];
+};
+
+export default LiveStreamApp;
+
+
+
+
+
+
+
+
+
+
+
+
+
 In summary, the consumer transport is necessary for receiving media streams from other participants in the room in an SFU architecture. It enables media subscribing, allows the SFU server to forward media streams to the user's device, ensures scalability in group video conferencing scenarios, and provides mechanisms for handling media reception and adaptation.
 
 
