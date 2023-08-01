@@ -1288,7 +1288,7 @@ console.log(containsEmoji(plainTextMessage)); // false
 In summary, the consumer transport is necessary for receiving media streams from other participants in the room in an SFU architecture. It enables media subscribing, allows the SFU server to forward media streams to the user's device, ensures scalability in group video conferencing scenarios, and provides mechanisms for handling media reception and adaptation.
 
 
-### Ffmpeg to do recording 
+### Ffmpeg to do recording  (WRONG APPROACH)
 
 ```js
 const producerToRecordingMap = {};
@@ -1329,6 +1329,91 @@ io.on("connection", (socket) => {
 
 ```
 
+### FFMPEG 
 
+```js
+
+const { createMediasoupWorker, Router, WebRtcTransport } = require("mediasoup");
+const ffmpeg = require("fluent-ffmpeg");
+
+const startMediasoupWorker = async () => {
+  const worker = await createMediasoupWorker();
+  const router = await worker.createRouter();
+
+  const producerToRecordingMap = {};
+
+  // Handle socket connection
+  io.on("connection", (socket) => {
+    console.log("A user connected!");
+
+    // Handle start-recording event from the frontend
+    socket.on("start-recording", async ({ producerId }) => {
+      // Check if the producer exists and is not already being recorded
+      if (!router.producers.has(producerId)) {
+        console.log("Producer not found or already recording");
+        return;
+      }
+
+      const producer = router.producers.get(producerId);
+
+      // Create a new WebRTC transport to receive RTP packets from the producer
+      const producerTransport = await createWebRtcTransport(router);
+
+      // Consume the producer's media and send it to the consumer transport
+      const consumer = await producerTransport.consume({ producerId });
+
+      // Create a new WebRTC transport to send RTP packets to FFmpeg
+      const ffmpegTransport = await createWebRtcTransport(router);
+
+      // Start recording the media stream using FFmpeg
+      const outputPath = `/path/to/your/output/folder/${producerId}-${Date.now()}.webm`;
+      const args = ["-protocol_whitelist", "pipe,rtpfile", "-i", "pipe:0", outputPath];
+      const recordingProcess = ffmpeg(consumer.track)
+        .outputOptions(args)
+        .on("end", () => {
+          console.log("Recording ended!");
+          delete producerToRecordingMap[producerId];
+        })
+        .on("error", (err) => {
+          console.error("Error while recording:", err);
+          delete producerToRecordingMap[producerId];
+        })
+        .save(outputPath);
+
+      // Save the recording process and transports in the producerToRecordingMap
+      producerToRecordingMap[producerId] = {
+        producerTransport,
+        ffmpegTransport,
+        recordingProcess,
+      };
+
+      // Emit a message to the frontend indicating that recording has started
+      socket.emit("recording-started", { producerId, outputPath });
+    });
+
+    // Handle stop-recording event from the frontend
+    socket.on("stop-recording", async ({ producerId }) => {
+      const recordingInfo = producerToRecordingMap[producerId];
+      if (recordingInfo) {
+        const { producerTransport, ffmpegTransport, recordingProcess } = recordingInfo;
+        await producerTransport.close();
+        await ffmpegTransport.close();
+        recordingProcess.kill();
+        delete producerToRecordingMap[producerId];
+        console.log(`Recording for producer ${producerId} stopped.`);
+      }
+    });
+
+    socket.on("disconnect", () => {
+      console.log("A user disconnected!");
+    });
+  });
+};
+
+startMediasoupWorker().catch((err) => {
+  console.error("Error starting Mediasoup worker:", err);
+});
+
+```
 
 
