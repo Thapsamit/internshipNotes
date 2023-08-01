@@ -1288,3 +1288,47 @@ console.log(containsEmoji(plainTextMessage)); // false
 In summary, the consumer transport is necessary for receiving media streams from other participants in the room in an SFU architecture. It enables media subscribing, allows the SFU server to forward media streams to the user's device, ensures scalability in group video conferencing scenarios, and provides mechanisms for handling media reception and adaptation.
 
 
+### Ffmpeg to do recording 
+
+```js
+const producerToRecordingMap = {};
+
+io.on("connection", (socket) => {
+  console.log("A user connected!");
+
+  socket.on("start-recording", ({ producerId }) => {
+    // Check if the producer exists and is not already being recorded
+    if (producerToRecordingMap[producerId] || !producerTransport.producers.has(producerId)) {
+      return;
+    }
+
+    const producer = producerTransport.producers.get(producerId);
+    const fileName = `${producer.appData}-${Date.now()}.webm`;
+    const outputPath = `/path/to/your/output/folder/${fileName}`;
+
+    // Create a new FFmpeg process to start recording
+    const recordingProcess = ffmpeg(producer.track)
+      .output(outputPath)
+      .on("end", () => {
+        console.log("Recording ended!");
+        delete producerToRecordingMap[producerId];
+      })
+      .on("error", (err) => {
+        console.error("Error while recording:", err);
+        delete producerToRecordingMap[producerId];
+      })
+      .run();
+
+    producerToRecordingMap[producerId] = recordingProcess;
+  });
+
+  socket.on("disconnect", () => {
+    console.log("A user disconnected!");
+  });
+});
+
+```
+
+
+
+
