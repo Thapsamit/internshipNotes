@@ -1,41 +1,11 @@
+## How to remove a file that is already been pushed into remote repo such as config file
 
+- The below command will remove from git, remote repo and local filesystem after firing this command just add and commit the changes
+```bash
+git rm path/to/your/file/to/remove
+```
+- The below command will remove from git , remote repo but not from localfilesystem
 
-
-# React Native Notes:-
-
-## Setup a bare react native app
-- First follow the official documentation
-- Second we can download android studio and its necessary packages
-- Do not manage a global version of react-native-cli instead use the npx command to create a react  native project 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+```bash
+git rm --cached path/to/your/file/to/remove
+```
