@@ -22,3 +22,26 @@ npx prisma init
 2. Set the provider of the datasource block in schema.prisma to match your database: postgresql, mysql, sqlite, sqlserver, mongodb or cockroachdb.
 3. Run prisma db pull to turn your database schema into a Prisma schema.
 4. Run prisma generate to generate the Prisma Client. You can then start querying your database.
+
+
+- Define the models inside prisma.schema like below
+
+```js
+
+model Product {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String?
+  price       Float
+}
+```
+
+- Then run following command
+
+```bash
+npm install @prisma/client
+
+```
+Notice that the @prisma/client node module references a folder named .prisma/client. The .prisma/client folder contains your generated Prisma Client, and is modified each time you change the schema and run the following command:
+
+
