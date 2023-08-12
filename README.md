@@ -122,8 +122,22 @@ mysql -h localhost -u root -p
 ```
 
 
+## How to upgrade node js version in aws ec2 ubuntu instance?
 
+` Install nvm 
+```bash
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
+```
+- Activate nvm
+```bash
+. ~/.nvm/nvm.sh
+```
 
+- install node js version
+
+```bash
+nvm install --lts
+``` 
 
 
 
