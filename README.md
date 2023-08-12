@@ -58,3 +58,16 @@ npx prisma db push
 ```
 - npx prisma db push is primarily used for pushing changes from your Prisma schema file directly to the database without generating or applying migrations. This command is part of the Prisma Client, and it's useful for quickly applying changes to the database when you don't need migration files (for example, in a development or testing 
 
+
+- Push migration files to deploymemt environment using migrate
+
+```bash
+
+npx prisma migrate deploy
+
+```
+The migrate deploy command applies all pending migrations, and creates the database if it does not exist. Primarily used in non-development environments. This command:
+
+- Does not look for drift in the database or changes in the Prisma schema
+- Does not reset the database or generate artifacts
+- Does not rely on a shadow database
