@@ -43,6 +43,10 @@ npm install @prisma/client
 
 ```
 Notice that the @prisma/client node module references a folder named .prisma/client. The .prisma/client folder contains your generated Prisma Client, and is modified each time you change the schema and run the following command:
+- Run generate command to generate prisma client for each model
+```bash
+npx prisma generate
+```
 
 - Migrate models to your database:-
 
