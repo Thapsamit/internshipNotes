@@ -218,8 +218,29 @@ nvm install --lts
 
 
 
+### How to uninstall mysql from aws ec2 ubuntu instance?
 
 
+- stop mysql service
+```bash
+sudo systemctl stop mysql
+
+```
+- run below command
+```bash
+sudo apt purge mysql-server mysql-client mysql-common mysql-server-core-* mysql-client-core-*
+
+```
+- Run cleanups
+
+```bash
+sudo rm -rf /etc/mysql /var/lib/mysql
+
+sudo apt autoremove
+sudo apt autoclean
+
+
+```
 
 
 
