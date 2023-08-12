@@ -115,6 +115,11 @@ nano .ssh/authorized_keys
 - Step 8 - connect with new .pem file through ssh or termius
 
 
+### How to install mysql in aws ec2 ubuntu instance?
+```bash
+sudo apt install mysql-server
+```
+
 
 ### How to open mysql in aws ec2 ubuntu
 ```bash
