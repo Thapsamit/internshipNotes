@@ -116,10 +116,81 @@ nano .ssh/authorized_keys
 
 
 ### How to install mysql in aws ec2 ubuntu instance?
+- Install mysql-server
 ```bash
 sudo apt install mysql-server
 ```
+- Check status of mysql
+```bash
+sudo systemctl status mysql
+```
+- How to change password of mysql in aws ec2 ubuntu instance
+- Refer to this blog step by step
+  https://linuxhint.com/change-mysql-root-password-ubuntu/
 
+- or follow directly these commands
+- Stop mysql service
+```bash
+sudo systemctl stop mysql.service
+```
+- Set mysql without checks
+```bash
+sudo systemctl set-environment MYSQLD_OPTS="--skip-networking --skip-grant-tables"
+```
+- Start mysql service again
+```bash
+sudo systemctl start mysql.service
+```
+- Go to mysql without pass
+
+```bash
+sudo mysql -u root
+```
+- Flush all privileges first
+```bash
+flush privileges;
+```
+- Use mysql db
+
+```bash
+use mysql
+
+```
+- Alter root password
+
+```bash
+ALTER USER  'root'@'localhost' IDENTIFIED BY 'the-new-password';
+
+```
+
+- Revert back sql to normal mode with pass
+
+```bash
+sudo systemctl unset-environment MYSQLD_OPTS
+```
+
+- Remove modified system configuration
+```bash
+sudo systemctl revert mysql
+
+```
+- Kill all mysql processes
+```bash
+
+sudo killall -u mysql
+```
+
+- Last step restart again mysql service
+```bash
+sudo systemctl restart mysql.service
+```
+
+
+
+```bash
+sudo systemctl stop mysql.service
+
+```
 
 ### How to open mysql in aws ec2 ubuntu
 ```bash
