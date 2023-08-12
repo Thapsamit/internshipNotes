@@ -242,6 +242,22 @@ sudo apt autoclean
 
 ```
 
+### UPADTED How to set root password to allow password auth with mysql in aws ec2 
+
+``` bash
+use mysql 
+```
+```bash
+ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'mypassword';
+
+```
+
+```
+FLUSH PRIVILEGES;
+```
+
+- Now if you login you need the new password to login into mysql
+
 
 
 
