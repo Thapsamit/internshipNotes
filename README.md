@@ -26,3 +26,26 @@ module.exports = {
 ```bash
 npx sequelize-cli db:migrate:undo
 ```
+
+
+### Foreign key realtionship 
+
+```js
+const { DataTypes } = require('sequelize');
+const sequelize = require('../config/db'); // Import your Sequelize instance
+
+const User = sequelize.define('User', {
+  username: DataTypes.STRING,
+  // Other attributes...
+});
+
+// Define the association between User and Post models
+User.associate = (models) => {
+  User.hasMany(models.Post, { foreignKey: 'userId' });
+};
+
+module.exports = User;
+
+```
+
+
