@@ -20,3 +20,9 @@ module.exports = {
 };
 
 ```
+
+### Undo migrations files
+
+```bash
+npx sequelize-cli db:migrate:undo
+```
