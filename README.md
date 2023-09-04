@@ -262,5 +262,51 @@ FLUSH PRIVILEGES;
 
 
 
+## how to get and put object directly to aws s3
+
+```js
+const AWS = require('aws-sdk');
+const fs = require('fs');
+const PDFDocument = require('pdf-lib');
+
+const s3 = new AWS.S3({
+  accessKeyId: 'YOUR_ACCESS_KEY_ID',
+  secretAccessKey: 'YOUR_SECRET_ACCESS_KEY',
+});
+
+const imageToDoc = async (req, res) => {
+  const pdfData = await s3.getObject({ Bucket: 'your-bucket-name', Key: 'output.pdf' }).promise();
+  const pdfDoc = await PDFDocument.load(pdfData.Body);
+
+  const imageFile = await pdfDoc.embedJpg(req.files.imageFile.data);
+  const jpgDims = imageFile.scale(0.35);
+
+  const page = pdfDoc.addPage();
+  const marginFromTop = 50;
+  page.drawImage(imageFile, {
+    x: page.getWidth() / 2 - jpgDims.width / 2,
+    y: page.getHeight() - jpgDims.height - marginFromTop,
+    width: jpgDims.width,
+    height: jpgDims.height,
+  });
+
+  // Serialize the PDFDocument to bytes (a Uint8Array)
+  const modifiedPdfBytes = await pdfDoc.save();
+
+  // Upload the modified PDF back to S3
+  await s3.putObject({ Bucket: 'your-bucket-name', Key: 'output.pdf', Body: modifiedPdfBytes }).promise();
+
+  return res.status(200).json({ data: 'base 64 image' });
+};
+
+// Make sure to handle errors appropriately and replace 'your-bucket-name' and AWS credentials with your actual values.
+
+
+```
+
+
+
+
+
 
 
