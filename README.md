@@ -173,6 +173,40 @@ In the frontend, when you make a request to the backend, the browser automatical
 
 Login Request: When a user logs in on the frontend, and you set the HttpOnly cookie on the server (as shown in the previous example), the cookie is stored by the browser.
 
+
+## How to check cookie 
+
+```js
+
+
+import React from 'react';
+import { Route, Redirect } from 'react-router-dom';
+
+const ProtectedRoute = ({ component: Component, ...rest }) => {
+  // Check for the presence of the authentication token (e.g., 'myToken') in cookies
+  const token = document.cookie.split('; ').find(row => row.startsWith('myToken='));
+
+  return (
+    <Route
+      {...rest}
+      render={(props) =>
+        token ? (
+          <Component {...props} />
+        ) : (
+          <Redirect to="/login" />
+        )
+      }
+    />
+  );
+};
+
+export default ProtectedRoute;
+
+
+```
+
+
+
 Subsequent Requests: When the user makes subsequent requests to the backend (e.g., accessing protected routes), the browser automatically includes the cookie in the request headers. You can see this in the Network tab of your browser's developer tools.
 
 
