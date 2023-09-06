@@ -284,6 +284,8 @@ export const getUpcomingClassApi = (roomId) =>
 
 ```
 
-
-
+#### Refer below article for more 
+```
+https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/withCredentials
+```
 
