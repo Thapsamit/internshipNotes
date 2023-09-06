@@ -228,3 +228,62 @@ Cross-Site Request Forgery (CSRF): CSRF attacks involve tricking a user into mak
 Phishing: Attackers may use phishing techniques to trick users into revealing their credentials or tokens. Educate users about safe browsing practices to reduce the risk of falling victim to phishing attacks.
 
 
+
+
+
+## how to use cookie properly from frontend to backend
+
+- Backend in order to recevive cookie from different domains such as below domain it should have following parameter setup in cookie-parser middleware
+- This will parse the cookie that backend receive under "req.cookies".
+```js
+app.use(cors({ origin: "http://localhost:3000", credentials: true }));
+```
+- To send cookies like httpOnly cookie to a response we can send it like below
+
+```js
+res.cookie("secret_token", secret_token, { httpOnly: true }); // send http cookie to frontend for further communication
+    return res
+      .status(200)
+      .json({ status: true, data: { authData, secret_token } });
+```
+
+### Please not in frontend to receive properly the cookies and set it to the cookies table of browser it  is necesary to do withCredentials as true to receivei and set cookie properly like below
+
+
+- Setting withCreds as true to get and set cookie properly 
+```js
+import axios from "axios";
+import { BASE_URL } from "../../constants/staticurls";
+const API = axios.create({ baseURL: BASE_URL, withCredentials: true });
+
+export const loginApi = (secret_token) =>
+  API.post(`/auth/login/${secret_token}`);
+```
+
+
+- In subsequent request as withCredentials as true will sent back the cookie to server which is available under req.cookies
+```js
+import axios from "axios";
+import { BASE_URL } from "../../constants/staticurls";
+
+const API = axios.create({ baseURL: BASE_URL, withCredentials: true });
+
+const config = {
+  headers: {
+    "Content-Type": "multipart/form-data",
+  },
+};
+export const getAllLiveClassesApi = () =>
+  API.get("/schedule-live-class/get-all");
+export const createLiveClassApi = (data) =>
+  API.post("/schedule-live-class/create", data, config);
+export const getLiveClassDetailsApi = (roomId) =>
+  API.get(`/schedule-live-class/get-details/${roomId}`);
+export const getUpcomingClassApi = (roomId) =>
+  API.get(`/schedule-live-class/get-upcoming-class/${roomId}`);
+
+```
+
+
+
+
