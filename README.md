@@ -167,7 +167,13 @@ export default App;
 
 ```
 
+## How cookie sent from frontend to backend
 
+In the frontend, when you make a request to the backend, the browser automatically includes the HttpOnly cookie in the request headers. You don't need to explicitly send the cookie data from the frontend; the browser takes care of this for you. Here's how it works:
+
+Login Request: When a user logs in on the frontend, and you set the HttpOnly cookie on the server (as shown in the previous example), the cookie is stored by the browser.
+
+Subsequent Requests: When the user makes subsequent requests to the backend (e.g., accessing protected routes), the browser automatically includes the cookie in the request headers. You can see this in the Network tab of your browser's developer tools.
 
 
 
