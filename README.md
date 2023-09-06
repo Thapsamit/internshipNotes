@@ -209,6 +209,22 @@ export default ProtectedRoute;
 
 Subsequent Requests: When the user makes subsequent requests to the backend (e.g., accessing protected routes), the browser automatically includes the cookie in the request headers. You can see this in the Network tab of your browser's developer tools.
 
+### How HttpsOnly cookie anhance security ?
 
+Here's how HttpOnly cookies enhance security:
+
+Inaccessible from JavaScript: HttpOnly cookies cannot be accessed or modified by JavaScript running in the browser. The browser enforces this restriction. As a result, attackers cannot use common techniques like Cross-Site Scripting (XSS) to steal tokens from client-side storage.
+
+Same-Origin Policy: Cookies, including HttpOnly cookies, are subject to the same-origin policy, which means they can only be accessed by pages from the same origin (i.e., same protocol, domain, and port). This further restricts the attack surface.
+
+Secure Transmission: HttpOnly cookies are typically transmitted securely over HTTPS, making them resistant to network-based attacks.
+
+However, it's essential to keep in mind that while HttpOnly cookies provide strong protection against client-side attacks, they do not protect against other security threats, such as:
+
+Server-side vulnerabilities: If your server-side code is vulnerable to attacks like SQL injection or remote code execution, attackers might gain access to authentication tokens directly from your server's storage.
+
+Cross-Site Request Forgery (CSRF): CSRF attacks involve tricking a user into making unwanted requests to your server using their authenticated session. To protect against CSRF attacks, you should implement anti-CSRF measures like using CSRF tokens.
+
+Phishing: Attackers may use phishing techniques to trick users into revealing their credentials or tokens. Educate users about safe browsing practices to reduce the risk of falling victim to phishing attacks.
 
 
