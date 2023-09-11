@@ -304,7 +304,12 @@ const imageToDoc = async (req, res) => {
 
 ```
 
+### How to move a folder to another folder 
 
+```bash
+mv source_folder ~/destination_folder/
+
+```
 
 
 
