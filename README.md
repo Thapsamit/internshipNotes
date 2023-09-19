@@ -91,7 +91,11 @@ lsblk # to view all blocks of volume
 ```
 
 
-use growpart 
+use grow part
+
+```shell
+sudo growpart /dev/xvda 1
+ 
 sudo resize2fs /dev/xvda1
 
 ```
