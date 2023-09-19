@@ -83,6 +83,11 @@ npm install pm2 -g
 
 ## How to increase volume of aws ec2 
 
+```shell
+lsblk # to view all blocks of volume
+
+```
+
 ```
 
 
