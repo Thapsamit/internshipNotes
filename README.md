@@ -1,7 +1,7 @@
 ## How to setup gitlab runner in aws ec2 ubuntu instance
 
 
-### Steps to inatall and configure gitlab runner 
+### Steps to install and configure gitlab runner 
 - Install repo first
 
 ```bash
