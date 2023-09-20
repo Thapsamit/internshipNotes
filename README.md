@@ -141,9 +141,9 @@ python manage.py shell
 ```
 
 
+### Installation in AWS EC2 ubuntu (Docker):-
 
-
-
+- Below are steps to configure docker in AWS EC2 ubuntu
 
 
 
