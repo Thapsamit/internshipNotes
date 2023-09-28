@@ -322,7 +322,7 @@ mv source_folder ~/destination_folder/
 ```
 
 
-### How to resolve sudo issue in ubuntu 
+## How to resolve sudo issue in ubuntu 
 - If accidently we ran a chmod command to /usr then it causes issue with sudo as it is under /usr/bin/sudo and we tried to modifies it 
 - and if we perform any sudo command then we get below error
 ```bash
