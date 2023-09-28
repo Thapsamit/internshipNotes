@@ -318,7 +318,61 @@ const imageToDoc = async (req, res) => {
 ```bash
 mv source_folder ~/destination_folder/
 
+
 ```
+
+
+### How to resolve sudo issue in ubuntu 
+- If accidently we ran a chmod command to /usr then it causes issue with sudo as it is under /usr/bin/sudo and we tried to modifies it 
+- and if we perform any sudo command then we get below error
+```bash
+sudo: /usr/bin/sudo must be owned by uid 0 and have the setuid bit set
+```
+- To resolve this issue you have to logged in as root user somehow
+- In aws ec2 ubuntu instance you can use below steps to log in as root user via AWS EC2 connect and then give back permission to sudo
+
+
+- Access the Root Shell:
+Since you currently can't run sudo commands, you will need to access a root shell. You can do this by rebooting the instance and interrupting the boot process to access the GRUB menu. Here's how:
+
+  a. If your AWS EC2 instance is running, stop it from the AWS Management Console.
+
+  b. Once the instance is stopped, right-click on the instance in the AWS Management Console, choose "Instance Settings," and then select "View/Change User Data."
+
+  c. In the User Data field, enter the following line:
+```bash
+#cloud-config
+cloud_final_modules:
+- [scripts-user, always]
+```
+
+- Start the instance
+- And connect via AWS EC2 Console , there we will be logged in as root now
+- Remount the Filesystem as Read/Write:
+You will need to remount the root filesystem as read/write to make changes. Use the following command:
+```bash
+mount -o remount,rw /
+
+```
+
+- Fix sudo Binary Permissions:
+Run the following commands to fix the permissions and ownership of the sudo binary:
+
+```bash
+
+chown root:root /usr/bin/sudo
+chmod 4755 /usr/bin/sudo
+
+```
+
+- Exit & reboot
+
+```
+exit
+sudo reboot
+```
+
+
 
 
 
