@@ -374,6 +374,13 @@ sudo reboot
 
 
 
+- How to connect to my sql running in aws ec2
+- Connect in workbench
+- select tcp/ip over ssh
+- add ssh configurations
+
+
+
 
 
 
