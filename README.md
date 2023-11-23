@@ -72,3 +72,15 @@ public class ScreenShareHelper {
 
 
 - swift build --product ScreenShareHelper -c release
+
+
+
+-
+```cpp
+import AppKit
+
+// Assuming window is your NSWindow instance
+if let window = yourWindow {
+    window.sharingType = NSWindowSharingType(rawValue: 0)
+}
+```
