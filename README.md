@@ -50,3 +50,21 @@ void Initialize(Local<Object> exports) {
 NODE_MODULE(NODE_GYP_MODULE_NAME, Initialize)
 ```
 
+- create swift module
+
+// ScreenShareHelper.swift
+
+import Cocoa
+
+public class ScreenShareHelper {
+    public init() {}
+
+    public func hideElectronWindow(windowId: String) {
+        print("Hiding Electron window with ID: \(windowId)")
+
+        // Assuming 'windowId' is the native window handle or identifier
+        if let window = NSApp.window(withWindowNumber: Int(windowId)) {
+            window.orderOut(nil)
+        }
+    }
+}
