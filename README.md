@@ -84,3 +84,32 @@ if let window = yourWindow {
     window.sharingType = NSWindowSharingType(rawValue: 0)
 }
 ```
+
+
+
+
+```swift
+// Package.swift
+
+// swift-tools-version:5.3
+import PackageDescription
+
+let package = Package(
+    name: "ScreenShareHelper",
+    platforms: [
+        .macOS(.v10_12),
+    ],
+    products: [
+        .library(
+            name: "ScreenShareHelper",
+            targets: ["ScreenShareHelper"]),
+    ],
+    targets: [
+        .target(
+            name: "ScreenShareHelper",
+            dependencies: []),
+    ]
+)
+
+
+```
