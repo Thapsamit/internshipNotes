@@ -113,3 +113,33 @@ let package = Package(
 
 
 ```
+
+
+```
+
+project-root/
+|-- electron-app/
+|   |-- main.js
+|   |-- index.html
+|   |-- package.json
+|   |-- node_modules/
+|   |   |-- ... (Electron dependencies)
+|-- node-addon/
+|   |-- binding.gyp
+|   |-- addon.cpp
+|   |-- build/
+|   |   |-- Release/
+|   |       |-- node-addon.node
+|   |-- ScreenShareHelper.xcframework/
+|       |-- ... (Swift module content)
+|-- swift-package/
+|   |-- Package.swift
+|   |-- Sources/
+|   |   |-- ScreenShareHelper/
+|   |       |-- ScreenShareHelper.swift
+|-- build/
+|   |-- ... (Build artifacts, generated automatically)
+
+
+```
+
