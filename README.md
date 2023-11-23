@@ -1,43 +1,52 @@
+## addon.cpp
+```cpp
+// addon.cpp
 
+#include <node.h>
+#import <Foundation/Foundation.h>
 
+using namespace v8;
 
-# React Native Notes:-
+void HideElectronWindow(const FunctionCallbackInfo<Value>& args) {
+    Isolate* isolate = args.GetIsolate();
 
-## Setup a bare react native app
-- First follow the official documentation
-- Second we can download android studio and its necessary packages
-- Do not manage a global version of react-native-cli instead use the npx command to create a react  native project 
+    // Extract the window ID from JavaScript arguments
+    if (args.Length() < 1 || !args[0]->IsString()) {
+        isolate->ThrowException(Exception::TypeError(
+            String::NewFromUtf8(isolate, "Invalid arguments. Expected a window ID as a string.")));
+        return;
+    }
 
+    String::Utf8Value windowIdArg(args[0]->ToString());
+    const char* windowId = *windowIdArg;
 
-For audio-only RTP packets: -f mulaw, -f alaw, -f pcm_mulaw, -f pcm_alaw, etc.
-For video-only RTP packets: -f h264, -f vp8, -f vp9, etc.
-For audio and video RTP packets: -f mpegts, -f webm, -f matroska, etc.
+    // Load the Swift module
+    NSBundle *bundle = [NSBundle mainBundle];
+    NSString *swiftModulePath = [bundle pathForResource:@"ScreenShareHelper" ofType:@"xcframework"];
+    NSBundle *swiftModuleBundle = [NSBundle bundleWithPath:swiftModulePath];
+    [swiftModuleBundle load];
 
+    // Call the Swift function with the window ID
+    Class ScreenShareHelperClass = NSClassFromString(@"ScreenShareHelper");
+    id screenShareHelperInstance = [[ScreenShareHelperClass alloc] init];
 
+    SEL hideWindowSelector = NSSelectorFromString(@"hideElectronWindow:");
+    NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:
+                                [screenShareHelperInstance methodSignatureForSelector:hideWindowSelector]];
+    [invocation setSelector:hideWindowSelector];
+    [invocation setTarget:screenShareHelperInstance];
+    [invocation setArgument:&windowId atIndex:2];  // 0 and 1 are reserved for target and selector
 
+    [invocation invoke];
 
+    // Return success to JavaScript
+    args.GetReturnValue().Set(String::NewFromUtf8(isolate, "Electron window hidden during screen share."));
+}
 
+void Initialize(Local<Object> exports) {
+    NODE_SET_METHOD(exports, "hideElectronWindow", HideElectronWindow);
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+NODE_MODULE(NODE_GYP_MODULE_NAME, Initialize)
+```
 
