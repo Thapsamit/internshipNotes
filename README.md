@@ -53,7 +53,7 @@ NODE_MODULE(NODE_GYP_MODULE_NAME, Initialize)
 - create swift module
 
 // ScreenShareHelper.swift
-
+```swift
 import Cocoa
 
 public class ScreenShareHelper {
@@ -68,3 +68,7 @@ public class ScreenShareHelper {
         }
     }
 }
+```
+
+
+- swift build --product ScreenShareHelper -c release
