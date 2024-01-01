@@ -1522,3 +1522,47 @@ export default YourComponent;
 
 ```
 
+
+```js
+
+
+const getScreenShareFeed = async () => {
+  try {
+    const canvas = canvasRef.current; // Assuming you have a canvas reference
+    const stream = canvas.captureStream(); // Capture the canvas stream
+
+    if (screenShareRef.current) {
+      screenShareRef.current.srcObject = stream;
+
+      // call produce method using producerTransport to send this media to everybody else in real time
+
+      const track = stream.getTracks()[0]; // Get the first track (video track)
+
+      if (producerTransport) {
+        // if there is producerTransport
+        if (producerScreenShare) {
+          await producerScreenShare.replaceTrack({ track });
+          setScreenShareStream(stream);
+          setIsScreenShare(true);
+          return;
+        }
+
+        const producerScreenShareRec = await producerTransport.produce({
+          track,
+          appData: {
+            streamType: staticVariables.screenShare,
+            isTeacher: true,
+          },
+        });
+
+        setProducerScreenShare(producerScreenShareRec);
+        setScreenShareStream(stream);
+        setIsScreenShare(true);
+      }
+    }
+  } catch (err) {
+    console.log("Screen share feed error = ", err);
+  }
+};
+
+```
