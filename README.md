@@ -1452,4 +1452,73 @@ Remember that managing real-time communication streams and dynamic changes durin
 
 ```
 
+```js
+import React, { useEffect, useRef } from 'react';
+
+const YourComponent = ({ videoRef }) => {
+  const canvasRef = useRef(null);
+  const canvasWidth = '100%'; // Set to a percentage or fixed value if needed
+  const canvasHeight = '100%'; // Set to a percentage or fixed value if needed
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext('2d');
+
+    const parentContainer = canvas.parentElement;
+
+    const renderVideoToCanvas = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      console.log('Capture screen share', canvas.width, canvas.height);
+
+      const videoWidth = videoRef.current.videoWidth;
+      const videoHeight = videoRef.current.videoHeight;
+
+      const aspectRatio = videoWidth / videoHeight;
+
+      // Calculate the dimensions to fit the video inside the canvas while preserving the aspect ratio
+      let destinationWidth = parentContainer.clientWidth;
+      let destinationHeight = destinationWidth / aspectRatio;
+
+      if (destinationHeight > parentContainer.clientHeight) {
+        destinationHeight = parentContainer.clientHeight;
+        destinationWidth = destinationHeight * aspectRatio;
+      }
+
+      const destinationX = (parentContainer.clientWidth - destinationWidth) / 2;
+      const destinationY = (parentContainer.clientHeight - destinationHeight) / 2;
+
+      ctx.drawImage(videoRef.current, destinationX, destinationY, destinationWidth, destinationHeight);
+      animateFrameId = window.requestAnimationFrame(renderVideoToCanvas);
+    };
+
+    // Set canvas dimensions based on the parent container's size
+    canvas.width = parentContainer.clientWidth;
+    canvas.height = parentContainer.clientHeight;
+
+    animateFrameId = window.requestAnimationFrame(renderVideoToCanvas);
+
+    // Cleanup function to cancel animation frame when component unmounts
+    return () => {
+      window.cancelAnimationFrame(animateFrameId);
+    };
+  }, [videoRef]);
+
+  return (
+    <canvas
+      ref={canvasRef}
+      width={canvasWidth}
+      height={canvasHeight}
+      style={{
+        position: 'absolute',
+        width: '100%',
+        height: '100%',
+        objectFit: 'contain',
+      }}
+    ></canvas>
+  );
+};
+
+export default YourComponent;
+
+```
 
