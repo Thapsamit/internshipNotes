@@ -1,5 +1,5 @@
 ## creating two different environments
-```
+```js
 "start:prod": "dotenv -e .env.production react-scripts start",
 "build:prod": "dotenv -e .env.production react-scripts build"
 ```
@@ -8,5 +8,4 @@
 
 ```
 https://<bucket-name>.s3.<region>.amazonaws.com/
-
 ```
