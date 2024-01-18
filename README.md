@@ -1566,3 +1566,138 @@ const getScreenShareFeed = async () => {
 };
 
 ```
+
+## How to get thumbnail using mediaconvert
+
+```js
+const mediaconvertconfig = (inputLocation, outputLocation, thumbnailOutputLocation) => {
+  const params = {
+    Queue: process.env.MEDIACONVERT_QUEUE,
+    Role: process.env.MEDIACONVERT_ROLE,
+    Settings: {
+      TimecodeConfig: {
+        Source: "ZEROBASED",
+      },
+      OutputGroups: [
+        {
+          CustomName: "convert-video-to-dash",
+          Name: "DASH ISO",
+          Outputs: [
+            {
+              Preset: "System-Ott_Dash_Mp4_Avc_4x3_480x360p_15Hz_0.4Mbps",
+              NameModifier: "_output1",
+            },
+            {
+              ContainerSettings: {
+                Container: "MPD",
+              },
+              AudioDescriptions: [
+                {
+                  AudioSourceName: "Audio Selector 1",
+                  CodecSettings: {
+                    Codec: "AAC",
+                    AacSettings: {
+                      Bitrate: 96000,
+                      CodingMode: "CODING_MODE_2_0",
+                      SampleRate: 48000,
+                    },
+                  },
+                },
+              ],
+              NameModifier: "_output2",
+            },
+            {
+              Preset: "System-Ott_Dash_Mp4_Avc_16x9_1280x720p_30Hz_5.0Mbps",
+              NameModifier: "_output3",
+            },
+            {
+              Preset: "System-Ott_Dash_Mp4_Avc_16x9_1920x1080p_30Hz_8.5Mbps",
+              NameModifier: "_output4",
+            },
+          ],
+          OutputGroupSettings: {
+            Type: "DASH_ISO_GROUP_SETTINGS",
+            DashIsoGroupSettings: {
+              SegmentLength: 30,
+              Destination: outputLocation,
+              Encryption: {
+                PlaybackDeviceCompatibility: "CENC_V1",
+                SpekeKeyProvider: {
+                  ResourceId: generateRandomId(20),
+                  SystemIds: [
+                    process.env.PLAYREADY_SYSTEM_ID,
+                    process.env.WIDEVINE_SYSTEM_ID,
+                  ],
+                  Url: process.env.API_GATEWAY_SPEKE_URL,
+                },
+              },
+              FragmentLength: 2,
+            },
+          },
+        },
+        {
+          CustomName: "thumbnails",
+          Name: "Thumbnails",
+          Outputs: [
+            {
+              ContainerSettings: {
+                Container: "RAW",
+              },
+              VideoDescription: {
+                ScalingBehavior: "DEFAULT",
+                TimecodeInsertion: "DISABLED",
+                AntiAlias: "ENABLED",
+                Sharpness: 50,
+                CodecSettings: {
+                  Codec: "FRAME_CAPTURE",
+                  FrameCaptureSettings: {
+                    FramerateNumerator: 1,
+                    FramerateDenominator: 5,
+                    MaxCaptures: 100,
+                    Quality: 80,
+                    Resolution: "ORIGINAL",
+                    S3DestinationSettings: {
+                      AccessControl: "PUBLIC_READ",
+                      Bucket: thumbnailOutputLocation,
+                      StorageClass: "STANDARD",
+                    },
+                  },
+                },
+              },
+              NameModifier: "_thumbnails",
+            },
+          ],
+          OutputGroupSettings: {
+            Type: "FILE_GROUP_SETTINGS",
+            FileGroupSettings: {
+              Destination: thumbnailOutputLocation,
+            },
+          },
+        },
+      ],
+      Inputs: [
+        {
+          AudioSelectors: {
+            "Audio Selector 1": {
+              DefaultSelection: "DEFAULT",
+            },
+          },
+          VideoSelector: {},
+          TimecodeSource: "ZEROBASED",
+          FileInput: inputLocation,
+        },
+      ],
+    },
+    AccelerationSettings: {
+      Mode: "DISABLED",
+    },
+    StatusUpdateInterval: "SECONDS_60",
+    Priority: 0,
+  };
+  return params;
+};
+
+module.exports = mediaconvertconfig;
+```
+
+
