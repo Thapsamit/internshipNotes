@@ -1700,4 +1700,179 @@ const mediaconvertconfig = (inputLocation, outputLocation, thumbnailOutputLocati
 module.exports = mediaconvertconfig;
 ```
 
+## How to create project insp bottom navigator 
 
+``` 
+function BottomTabNavigation() {
+  return (
+    <Tab.Navigator
+      screenOptions={{
+        headerShown: false,
+        tabBarShowLabel: false,
+        tabBarStyle: {
+          backgroundColor: "rgba(60, 141, 188, 1)",
+          position: "absolute",
+          bottom: 15,
+          marginHorizontal: 15,
+          borderRadius: 15,
+          height: 70,
+        },
+      }}
+    >
+      <Tab.Screen
+        name="Restaurant"
+        component={RestaurantScreen}
+        options={{
+          tabBarIcon: ({ color, size, focused }) => (
+            <View
+              style={{
+                // centring Tab Button...
+                position: "relative",
+                backgroundColor: focused ? "white" : "transparent",
+                padding: 6,
+                borderRadius: 10,
+              }}
+            >
+              {focused && (
+                <View
+                  style={{
+                    position: "absolute",
+                    top: -5,
+                    left: "50%",
+                    borderRadius: 10,
+                    width: 10,
+                    height: 20,
+                    transform: [{ translateX: -23 }],
+                    backgroundColor: "white",
+                  }}
+                />
+              )}
+
+              <Icon
+                name="home-outline"
+                size={30}
+                color={focused ? "rgba(60, 141, 188, 1)" : "white"}
+              />
+            </View>
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Settings"
+        component={SettingsScreen}
+        options={{
+          tabBarIcon: ({ color, size, focused }) => (
+            <View
+              style={{
+                // centring Tab Button...
+                position: "relative",
+                backgroundColor: focused ? "white" : "transparent",
+                padding: 6,
+                borderRadius: 10,
+              }}
+            >
+              {focused && (
+                <View
+                  style={{
+                    position: "absolute",
+                    top: -5,
+                    left: "50%",
+                    borderRadius: 10,
+                    width: 10,
+                    height: 20,
+                    transform: [{ translateX: -23 }],
+                    backgroundColor: "white",
+                  }}
+                />
+              )}
+
+              <Icon
+                name="home-outline"
+                size={30}
+                color={focused ? "rgba(60, 141, 188, 1)" : "white"}
+              />
+            </View>
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Maps"
+        component={MapsScreen}
+        options={{
+          tabBarIcon: ({ color, size, focused }) => (
+            <View
+              style={{
+                // centring Tab Button...
+                position: "relative",
+                backgroundColor: focused ? "white" : "transparent",
+                padding: 6,
+                borderRadius: 10,
+              }}
+            >
+              {focused && (
+                <View
+                  style={{
+                    position: "absolute",
+                    top: -5,
+                    left: "50%",
+                    borderRadius: 10,
+                    width: 10,
+                    height: 20,
+                    transform: [{ translateX: -23 }],
+                    backgroundColor: "white",
+                  }}
+                />
+              )}
+
+              <Icon
+                name="home-outline"
+                size={30}
+                color={focused ? "rgba(60, 141, 188, 1)" : "white"}
+              />
+            </View>
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Profile"
+        component={ProfileScreen}
+        options={{
+          tabBarIcon: ({ color, size, focused }) => (
+            <View
+              style={{
+                // centring Tab Button...
+                position: "relative",
+                backgroundColor: focused ? "white" : "transparent",
+                padding: 6,
+                borderRadius: 10,
+              }}
+            >
+              {focused && (
+                <View
+                  style={{
+                    position: "absolute",
+                    top: -5,
+                    left: "50%",
+                    borderRadius: 10,
+                    width: 10,
+                    height: 20,
+                    transform: [{ translateX: -23 }],
+                    backgroundColor: "white",
+                  }}
+                />
+              )}
+
+              <Icon
+                name="home-outline"
+                size={30}
+                color={focused ? "rgba(60, 141, 188, 1)" : "white"}
+              />
+            </View>
+          ),
+        }}
+      />
+    </Tab.Navigator>
+  );
+}
+
+```
