@@ -10,7 +10,8 @@
 
 
 
-
+### How to use react native svg in react native
+Use https://www.svgviewer.dev/svg-to-react-native-jsx for converting svg to jsx
 
 
 
