@@ -12,3 +12,5 @@
 - https://mediasoup.discourse.group/t/pipetransport/5131/3
 - https://mediasoup.discourse.group/t/pipetransport-clarification/4686/4
 - https://mediasoup.org/documentation/v3/scalability/
+
+- PipeTransport may be needed to pipe everything between server through routers
