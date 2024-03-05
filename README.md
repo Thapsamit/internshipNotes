@@ -56,7 +56,7 @@ npx prisma migrate
 
 ```
 
-- Push existing prisma schema to db
+- Push existing prisma schema to db When you run npx prisma db push, Prisma analyzes the schema defined in schema.prisma and applies any pending schema changes directly to the database, without generating or applying migrations.
 ```bash
 npx prisma db push 
 ```
