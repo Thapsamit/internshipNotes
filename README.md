@@ -80,3 +80,14 @@ The migrate deploy command applies all pending migrations, and creates the datab
 - Does not look for drift in the database or changes in the Prisma schema
 - Does not reset the database or generate artifacts
 - Does not rely on a shadow database
+
+### How to add new columns to already existing table?
+- Update schema.prisma file and add new column
+- run migrations to create new migration folder
+```shell
+npx prisma migrate dev --name add_col_to_table
+```
+- push to db
+```shell
+npx prisma db push
+```
