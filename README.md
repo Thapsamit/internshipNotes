@@ -70,6 +70,11 @@ npx prisma db push
 npx prisma migrate deploy
 
 ```
+
+- Create migration folder using below command
+```shell
+npx prisma migrate dev --name create_user_table
+```
 The migrate deploy command applies all pending migrations, and creates the database if it does not exist. Primarily used in non-development environments. This command:
 
 - Does not look for drift in the database or changes in the Prisma schema
