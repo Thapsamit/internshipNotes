@@ -44,3 +44,31 @@ function extractTransactions(text) {
 }
 
 ```
+
+
+## Create Database
+
+```
+// db.js
+
+const sqlite3 = require('sqlite3').verbose();
+
+// Create a new SQLite database instance
+const db = new sqlite3.Database(':memory:'); // Use ':memory:' for in-memory database, or provide a file path for persistent database
+
+// Define schema and create tables
+db.serialize(() => {
+    db.run(`
+        CREATE TABLE IF NOT EXISTS transactions (
+            id INTEGER PRIMARY KEY,
+            xref TEXT,
+            total_loan_amount REAL
+        )
+    `);
+});
+
+// Export the database instance
+module.exports = db;
+
+```
+
