@@ -115,3 +115,96 @@ getAllTransactions((err, transactions) => {
 });
 
 ```
+
+
+## How to do report generation
+
+```js
+const sqlite3 = require('sqlite3').verbose();
+
+// Open SQLite database connection
+const db = new sqlite3.Database('./database.db');
+
+// Function to generate report for the broker
+function generateBrokerReport(period) {
+    let sqlQuery;
+
+    // Determine SQL query based on period
+    if (period === 'daily') {
+        sqlQuery = `
+            SELECT 
+                DATE(settlement_date) AS date,
+                broker,
+                SUM(total_loan_amount) AS total_loan_amount
+            FROM 
+                transactions
+            WHERE 
+                settlement_date >= DATE('now', '-1 day')
+            GROUP BY 
+                date,
+                broker
+            ORDER BY 
+                date DESC,
+                total_loan_amount DESC;
+        `;
+    } else if (period === 'weekly') {
+        sqlQuery = `
+            SELECT 
+                DATE(settlement_date, 'weekday 0', '-7 days') AS start_of_week,
+                DATE(settlement_date, 'weekday 0', '-1 days') AS end_of_week,
+                broker,
+                SUM(total_loan_amount) AS total_loan_amount
+            FROM 
+                transactions
+            WHERE 
+                settlement_date >= DATE('now', '-7 days')
+            GROUP BY 
+                start_of_week,
+                end_of_week,
+                broker
+            ORDER BY 
+                start_of_week DESC,
+                total_loan_amount DESC;
+        `;
+    } else if (period === 'monthly') {
+        sqlQuery = `
+            SELECT 
+                DATE(settlement_date, 'start of month') AS start_of_month,
+                DATE(settlement_date, 'start of month', '+1 month', '-1 day') AS end_of_month,
+                broker,
+                SUM(total_loan_amount) AS total_loan_amount
+            FROM 
+                transactions
+            WHERE 
+                settlement_date >= DATE('now', 'start of month')
+            GROUP BY 
+                start_of_month,
+                end_of_month,
+                broker
+            ORDER BY 
+                start_of_month DESC,
+                total_loan_amount DESC;
+        `;
+    } else {
+        console.error('Invalid period specified.');
+        return;
+    }
+
+    // Execute the SQL query
+    db.all(sqlQuery, (err, rows) => {
+        if (err) {
+            console.error('Error executing SQL query:', err);
+        } else {
+            console.log('Broker Report for', period);
+            console.table(rows); // Print report data in a table format
+        }
+    });
+}
+
+// Example usage:
+generateBrokerReport('daily');
+generateBrokerReport('weekly');
+generateBrokerReport('monthly');
+
+
+```
