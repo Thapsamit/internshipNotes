@@ -72,3 +72,46 @@ module.exports = db;
 
 ```
 
+
+## How to insert in sqlite
+
+```js
+
+// app.js
+
+const db = require('./db');
+
+// Function to insert a transaction into the database
+function insertTransaction(transaction) {
+    db.run("INSERT INTO transactions (xref, total_loan_amount) VALUES (?, ?)", [transaction.xref, transaction.total_loan_amount], (err) => {
+        if (err) {
+            console.error('Error inserting transaction:', err);
+        } else {
+            console.log('Transaction inserted successfully.');
+        }
+    });
+}
+
+// Function to retrieve all transactions from the database
+function getAllTransactions(callback) {
+    db.all("SELECT * FROM transactions", (err, rows) => {
+        if (err) {
+            console.error('Error retrieving transactions:', err);
+            callback(err, null);
+        } else {
+            callback(null, rows);
+        }
+    });
+}
+
+// Example usage
+insertTransaction({ xref: '1001', total_loan_amount: 5000 });
+getAllTransactions((err, transactions) => {
+    if (err) {
+        console.error('Error:', err);
+    } else {
+        console.log('All transactions:', transactions);
+    }
+});
+
+```
