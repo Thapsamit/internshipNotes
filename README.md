@@ -434,3 +434,14 @@ When you type exit or press Ctrl+C (for tunnels), SSH closes the session.
 
 The encrypted channel and any tunnels are terminated.
 
+
+
+## check and install specific virtual env
+
+```shell
+py -0
+```
+
+```shell
+py -3.11 -m venv venv
+```
