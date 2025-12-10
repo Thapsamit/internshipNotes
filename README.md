@@ -86,18 +86,16 @@ npm install pm2 -g
 ```shell
 lsblk # to view all blocks of volume
 
+```shell
+sudo growpart /dev/nvme0n1 1 (partiion name along with partiion number)
 ```
-
-```
-
-
-use grow part
 
 ```shell
-sudo growpart /dev/xvda 1
- 
-sudo resize2fs /dev/xvda1
+df -T / (check filesystem type)
+```
 
+```shell
+sudo resize2fs /dev/nvme0n1p1 (resizing filesystem)
 ```
 
 
