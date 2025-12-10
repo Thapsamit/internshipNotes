@@ -388,5 +388,49 @@ sudo reboot
 
 
 
+3️⃣ Server sends its public key
 
+EC2 sends its SSH host public key to your local machine.
+
+Your SSH client checks if it trusts the server (stored in ~/.ssh/known_hosts).
+
+If it’s the first time, you’ll see a prompt to confirm.
+
+This ensures you are really connecting to your EC2 and not an impostor (prevents MITM attacks).
+
+4️⃣ Authentication using your key pair
+
+Your local SSH client proves it has the private key corresponding to the public key stored in the EC2 user’s ~/.ssh/authorized_keys.
+
+The server sends a challenge encrypted with the public key.
+
+Your client uses the private key to respond correctly.
+
+If it matches, the server authenticates you.
+
+No password is sent over the network — it’s all public/private key cryptography.
+
+5️⃣ Establish encrypted session
+
+Once authenticated, SSH sets up an encrypted channel for all data.
+
+You now have a secure terminal session on EC2.
+
+Any command you type is sent encrypted, executed on EC2, and the output is sent back encrypted.
+
+6️⃣ (Optional) Port forwarding / tunnels
+
+If you use -L local_port:remote_host:remote_port:
+
+SSH sets up a secure tunnel inside this encrypted session.
+
+Your local machine can talk to remote services (like PostgreSQL) as if they were local, through the tunnel.
+
+All tunnel traffic is encrypted over SSH.
+
+7️⃣ Session ends
+
+When you type exit or press Ctrl+C (for tunnels), SSH closes the session.
+
+The encrypted channel and any tunnels are terminated.
 
