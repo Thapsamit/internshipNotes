@@ -85,6 +85,7 @@ npm install pm2 -g
 
 ```shell
 lsblk # to view all blocks of volume
+```
 
 ```shell
 sudo growpart /dev/nvme0n1 1 (partiion name along with partiion number)
