@@ -380,6 +380,12 @@ sudo reboot
 
 
 
+## HOW TO CONNECT YOUR LOCAL PROJECT TO DEV OR PROD DATABASE
+- option 1 - Add your public ip like 130.30.3.3/32 to inbound rules
+- option 2 - use ssh tunnel
+- Option 1 has limitation if your ip is dynamic then adding inbound rule will only work till you have the ip assigned in your device
+- Option 2 using ssh tunnel we can forward a localport to connect to ec2 database directly basically using secure connection and add the details of the connection like port password etc 
+
 
 
 
