@@ -99,6 +99,43 @@ df -T / (check filesystem type)
 sudo resize2fs /dev/nvme0n1p1 (resizing filesystem)
 ```
 
+### Important point why to check file type before resizing 
+```
+df -Th /
+```
+This is because of different file type system
+
+```bash
+ext4 
+
+Can be grown while mounted
+
+Uses resize2fs
+
+Very forgiving and widely used
+
+```
+
+```bash
+xfs
+
+Can only grow, never shrink
+
+Must use xfs_growfs
+
+Resizing the block device alone does nothing
+```
+
+```bash
+btrfs
+
+Grows/shrinks at the filesystem level, not the block device
+
+Uses completely different commands
+
+Partition resizing is optional
+
+```
 
 ## How to add new key/value pair and new pem file if we lost the existing pem file of aws ec2 instance?
 
