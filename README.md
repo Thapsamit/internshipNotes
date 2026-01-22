@@ -1,318 +1,168 @@
-## addon.cpp
-```cpp
-// addon.cpp
+# Docker Installation Guide
 
-#include <node.h>
-#import <Foundation/Foundation.h>
+This guide provides step-by-step instructions to install specific versions of Docker and Docker Compose on Ubuntu 20.04.
 
-using namespace v8;
+## Target Versions
+- **Docker**: 20.10.21
+- **Docker Compose**: 1.25.0
 
-void HideElectronWindow(const FunctionCallbackInfo<Value>& args) {
-    Isolate* isolate = args.GetIsolate();
+## Prerequisites
+- Ubuntu 20.04 LTS server
+- sudo privileges
+- Internet connection
 
-    // Extract the window ID from JavaScript arguments
-    if (args.Length() < 1 || !args[0]->IsString()) {
-        isolate->ThrowException(Exception::TypeError(
-            String::NewFromUtf8(isolate, "Invalid arguments. Expected a window ID as a string.")));
-        return;
-    }
+## Installation Steps
 
-    String::Utf8Value windowIdArg(args[0]->ToString());
-    const char* windowId = *windowIdArg;
+### 1. Remove Existing Docker Installations
 
-    // Load the Swift module
-    NSBundle *bundle = [NSBundle mainBundle];
-    NSString *swiftModulePath = [bundle pathForResource:@"ScreenShareHelper" ofType:@"xcframework"];
-    NSBundle *swiftModuleBundle = [NSBundle bundleWithPath:swiftModulePath];
-    [swiftModuleBundle load];
-
-    // Call the Swift function with the window ID
-    Class ScreenShareHelperClass = NSClassFromString(@"ScreenShareHelper");
-    id screenShareHelperInstance = [[ScreenShareHelperClass alloc] init];
-
-    SEL hideWindowSelector = NSSelectorFromString(@"hideElectronWindow:");
-    NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:
-                                [screenShareHelperInstance methodSignatureForSelector:hideWindowSelector]];
-    [invocation setSelector:hideWindowSelector];
-    [invocation setTarget:screenShareHelperInstance];
-    [invocation setArgument:&windowId atIndex:2];  // 0 and 1 are reserved for target and selector
-
-    [invocation invoke];
-
-    // Return success to JavaScript
-    args.GetReturnValue().Set(String::NewFromUtf8(isolate, "Electron window hidden during screen share."));
-}
-
-void Initialize(Local<Object> exports) {
-    NODE_SET_METHOD(exports, "hideElectronWindow", HideElectronWindow);
-}
-
-NODE_MODULE(NODE_GYP_MODULE_NAME, Initialize)
+```bash
+sudo apt-get remove docker docker-engine docker.io containerd runc
+sudo apt-get purge docker-ce docker-ce-cli containerd.io docker-compose-plugin
+sudo rm -rf /var/lib/docker
+sudo rm -rf /var/lib/containerd
 ```
 
-- create swift module
+### 2. Update System and Install Prerequisites
 
-// ScreenShareHelper.swift
-```swift
-import Cocoa
-
-public class ScreenShareHelper {
-    public init() {}
-
-    public func hideElectronWindow(windowId: String) {
-        print("Hiding Electron window with ID: \(windowId)")
-
-        // Assuming 'windowId' is the native window handle or identifier
-        if let window = NSApp.window(withWindowNumber: Int(windowId)) {
-            window.orderOut(nil)
-        }
-    }
-}
+```bash
+sudo apt-get update
+sudo apt-get install -y \
+    apt-transport-https \
+    ca-certificates \
+    curl \
+    gnupg \
+    lsb-release
 ```
 
+### 3. Add Docker's Official GPG Key
 
-- swift build --product ScreenShareHelper -c release
-
-
-
--
-```cpp
-import AppKit
-
-// Assuming window is your NSWindow instance
-if let window = yourWindow {
-    window.sharingType = NSWindowSharingType(rawValue: 0)
-}
+```bash
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
 ```
 
+### 4. Add Docker Repository
 
-
-
-```swift
-// Package.swift
-
-// swift-tools-version:5.3
-import PackageDescription
-
-let package = Package(
-    name: "ScreenShareHelper",
-    platforms: [
-        .macOS(.v10_12),
-    ],
-    products: [
-        .library(
-            name: "ScreenShareHelper",
-            targets: ["ScreenShareHelper"]),
-    ],
-    targets: [
-        .target(
-            name: "ScreenShareHelper",
-            dependencies: []),
-    ]
-)
-
-
+```bash
+echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu \
+  $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 ```
 
+### 5. Update Package Index
 
+```bash
+sudo apt-get update
 ```
 
-project-root/
-|-- electron-app/
-|   |-- main.js
-|   |-- index.html
-|   |-- package.json
-|   |-- node_modules/
-|   |   |-- ... (Electron dependencies)
-|-- node-addon/
-|   |-- binding.gyp
-|   |-- addon.cpp
-|   |-- build/
-|   |   |-- Release/
-|   |       |-- node-addon.node
-|   |-- ScreenShareHelper.xcframework/
-|       |-- ... (Swift module content)
-|-- swift-package/
-|   |-- Package.swift
-|   |-- Sources/
-|   |   |-- ScreenShareHelper/
-|   |       |-- ScreenShareHelper.swift
-|-- build/
-|   |-- ... (Build artifacts, generated automatically)
+### 6. Install Specific Docker Version (20.10.21)
 
+```bash
+# List available versions to verify
+apt-cache madison docker-ce
 
+# Install specific version
+sudo apt-get install -y docker-ce=5:20.10.21~3-0~ubuntu-focal docker-ce-cli=5:20.10.21~3-0~ubuntu-focal containerd.io
 ```
 
+### 7. Hold Docker Packages (Prevent Auto-updates)
 
+```bash
+sudo apt-mark hold docker-ce docker-ce-cli containerd.io
+```
 
-## Slot checking
+### 8. Install Docker Compose Version 1.25.0
 
+```bash
+sudo curl -L "https://github.com/docker/compose/releases/download/1.25.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 
-To achieve your requirement, you need to create a database schema to store users, their availability, and slots. Here's how you can structure your tables and write the necessary backend logic to support this:
+sudo chmod +x /usr/local/bin/docker-compose
+```
 
-Database Schema
-1. Users Table
-This table will store user information.
+### 9. Create Symbolic Link (Optional)
 
-sql
-Copy code
-CREATE TABLE users (
-    id SERIAL PRIMARY KEY,
-    email VARCHAR(255) NOT NULL UNIQUE,
-    username VARCHAR(255) NOT NULL UNIQUE,
-    name VARCHAR(255) NOT NULL,
-    completed_onboarding BOOLEAN NOT NULL,
-    time_zone VARCHAR(50) NOT NULL
-);
-2. Slots Table
-This table will store the time slots for availability.
+```bash
+sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+```
 
-sql
-Copy code
-CREATE TABLE slots (
-    id SERIAL PRIMARY KEY,
-    user_id INT REFERENCES users(id),
-    start_time TIMESTAMP NOT NULL,
-    end_time TIMESTAMP NOT NULL,
-    available BOOLEAN NOT NULL DEFAULT TRUE
-);
-3. Aggregated Slots Table
-This table will store aggregated slots for all users.
+### 10. Start and Enable Docker Service
 
-sql
-Copy code
-CREATE TABLE aggregated_slots (
-    id SERIAL PRIMARY KEY,
-    start_time TIMESTAMP NOT NULL,
-    end_time TIMESTAMP NOT NULL,
-    available_users INT NOT NULL DEFAULT 0
-);
-Backend Logic
-1. Checking Slots and Aggregating
-You need a function to check the slots for each user and then aggregate the results.
+```bash
+sudo systemctl start docker
+sudo systemctl enable docker
+```
 
-typescript
-Copy code
-import { PrismaClient } from '@prisma/client';
-import dayjs from 'dayjs';
+### 11. Add User to Docker Group (Optional)
 
-const prisma = new PrismaClient();
+```bash
+sudo usermod -aG docker $USER
+```
 
-async function checkUserSlots(userId: number, startTime: Date, endTime: Date) {
-  // Assume getUserAvailability is a function that returns availability for the user in the given time range
-  const slots = await getUserAvailability(userId, startTime, endTime);
-  return slots;
-}
+**Note**: After running this command, log out and log back in for the group changes to take effect.
 
-async function getUserAvailability(userId: number, startTime: Date, endTime: Date) {
-  // Simulated function to get user availability
-  const slots = [];
-  let currentTime = dayjs(startTime);
-  const endDate = dayjs(endTime);
+### 12. Verify Installation
 
-  while (currentTime.isBefore(endDate)) {
-    slots.push({
-      userId,
-      start_time: currentTime.toDate(),
-      end_time: currentTime.add(30, 'minute').toDate(),
-      available: Math.random() > 0.5 // Randomly simulate availability
-    });
-    currentTime = currentTime.add(30, 'minute');
-  }
+```bash
+sudo docker --version
+sudo docker-compose --version
+```
 
-  return slots;
-}
+## Expected Output
 
-async function aggregateSlotsForUsers(userIds: number[], startTime: Date, endTime: Date) {
-  const allSlots = [];
-  for (const userId of userIds) {
-    const userSlots = await checkUserSlots(userId, startTime, endTime);
-    allSlots.push(...userSlots);
-  }
+```
+Docker version 20.10.21, build 20.10.21-0ubuntu1~20.04.2
+docker-compose version 1.25.0, build unknown
+```
 
-  const aggregatedSlots = allSlots.reduce((acc, slot) => {
-    const key = `${slot.start_time.toISOString()}_${slot.end_time.toISOString()}`;
-    if (!acc[key]) {
-      acc[key] = { start_time: slot.start_time, end_time: slot.end_time, available_users: 0 };
-    }
-    if (slot.available) {
-      acc[key].available_users += 1;
-    }
-    return acc;
-  }, {});
+## Troubleshooting
 
-  // Save aggregated slots to the database
-  for (const key in aggregatedSlots) {
-    const slot = aggregatedSlots[key];
-    await prisma.aggregated_slots.upsert({
-      where: { start_time_end_time: { start_time: slot.start_time, end_time: slot.end_time } },
-      update: { available_users: slot.available_users },
-      create: { start_time: slot.start_time, end_time: slot.end_time, available_users: slot.available_users }
-    });
-  }
-}
+### Common Issues
 
-// Example cron job function
-async function cronJob() {
-  const users = await prisma.users.findMany();
-  const userIds = users.map(user => user.id);
+1. **Permission Denied**: Make sure you're using `sudo` for installation commands.
 
-  const startTime = new Date(); // Current date
-  const endTime = dayjs(startTime).add(7, 'days').toDate(); // 7 days from now
+2. **Package Not Found**: If the exact version isn't available, check available versions with:
+   ```bash
+   apt-cache madison docker-ce
+   ```
 
-  await aggregateSlotsForUsers(userIds, startTime, endTime);
-}
+3. **Repository Issues**: Ensure the GPG key and repository are correctly added.
 
-// Run the cron job
-cronJob().catch(console.error).finally(() => prisma.$disconnect());
-2. Fetching Available Slots for Frontend
-You need a function to fetch the available slots for the frontend based on the date range provided.
+4. **Service Not Starting**: Check Docker service status:
+   ```bash
+   sudo systemctl status docker
+   ```
 
-typescript
-Copy code
-import { PrismaClient } from '@prisma/client';
-import dayjs from 'dayjs';
+### Uninstall (if needed)
 
-const prisma = new PrismaClient();
+```bash
+sudo apt-get purge docker-ce docker-ce-cli containerd.io
+sudo rm -rf /var/lib/docker
+sudo rm -rf /var/lib/containerd
+sudo rm /usr/local/bin/docker-compose
+sudo rm /usr/bin/docker-compose
+```
 
-async function getAvailableSlots(startDate: Date, endDate: Date) {
-  const slots = await prisma.aggregated_slots.findMany({
-    where: {
-      start_time: {
-        gte: startDate,
-        lte: endDate
-      },
-      available_users: {
-        gt: 0 // Only fetch slots where at least one user is available
-      }
-    }
-  });
+## Important Notes
 
-  return slots.map(slot => ({
-    start_time: slot.start_time,
-    end_time: slot.end_time,
-    available_users: slot.available_users
-  }));
-}
+- **Production Environment**: Always test in a staging environment first
+- **Backup**: Create system backups before installation
+- **Firewall**: Configure firewall rules for Docker if needed
+- **Version Lock**: Packages are held to prevent automatic updates
+- **Ubuntu Version**: Instructions are for Ubuntu 20.04; adjust for other versions
 
-// Example API handler
-async function apiHandler(req, res) {
-  const { startDate, endDate } = req.query;
-  const start = new Date(startDate);
-  const end = new Date(endDate);
+## Security Considerations
 
-  const availableSlots = await getAvailableSlots(start, end);
-  res.json({ slots: availableSlots });
-}
+1. Keep Docker daemon secure
+2. Use non-root user when possible
+3. Regularly update security patches (while maintaining version compatibility)
+4. Configure proper firewall rules
+5. Use Docker secrets for sensitive data
 
-// Example usage
-apiHandler({ query: { startDate: '2024-07-01', endDate: '2024-07-08' } }, {
-  json: (data) => console.log(data)
-}).catch(console.error).finally(() => prisma.$disconnect());
-Summary
-Database Schema: Create tables for users, slots, and aggregated slots.
-Backend Logic: Implement functions to check user slots, aggregate the results, and save them in the database.
-Cron Job: Set up a cron job to run the slot checking and aggregation periodically.
-API Handler: Implement an API handler to fetch and return available slots to the frontend based on the provided date range.
-This approach ensures that your frontend can retrieve available slots efficiently, and your backend can manage and aggregate slot availability for multiple users.
+## Support
 
+For issues specific to these versions:
+- Docker 20.10.21: Check Docker documentation archive
+- Docker Compose 1.25.0: Refer to legacy compose documentation
+
+## License
+
+This installation guide is provided as-is for educational and deployment purposes.
