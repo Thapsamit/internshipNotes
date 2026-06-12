@@ -198,6 +198,128 @@ sudo -u postgres psql -d powerbi_replica -c "GRANT SELECT ON ALL TABLES IN SCHEM
 
 ---
 
+# PostgreSQL Replication Troubleshooting Guide
+
+A step-by-step guide to diagnose and fix logical replication issues — specifically when replica tables are missing columns.
+
+---
+
+## Step 1 — Check the PostgreSQL Logs
+
+Start by inspecting the last 200 lines of the PostgreSQL log to identify any replication errors:
+
+```bash
+sudo tail -n 200 /var/log/postgresql/postgresql-12-main.log
+```
+
+Look for errors such as:
+- `ERROR: logical replication target relation ... is missing some replicated columns`
+- Any `FATAL` or `ERROR` lines related to replication workers
+
+---
+
+## Step 2 — Compare Columns Between Primary and Replica
+
+If the error indicates missing columns in the replica, compare the column lists of the affected table on both databases:
+
+```bash
+comm -23 \
+  <(sudo -u postgres psql -d beshak_backend -Atc "
+    SELECT column_name
+    FROM information_schema.columns
+    WHERE table_schema='public'
+    AND table_name='marketplace_lead'
+    ORDER BY column_name;
+  ") \
+  <(sudo -u postgres psql -d beshak_backend_replica1 -Atc "
+    SELECT column_name
+    FROM information_schema.columns
+    WHERE table_schema='public'
+    AND table_name='marketplace_lead'
+    ORDER BY column_name;
+  ")
+```
+
+> **What this does:** `comm -23` shows lines only in the **first** file (primary), meaning columns that exist on primary but are **missing** from the replica.
+
+---
+
+## Step 3 — Disable the Subscription
+
+Before making schema changes on the replica, disable the subscription to avoid errors:
+
+```sql
+ALTER SUBSCRIPTION beshak_backend_replica1_sub DISABLE;
+```
+
+---
+
+## Step 4 — Add the Missing Column(s) to the Replica
+
+Run the `ALTER TABLE` on the **replica database** to add the missing column(s):
+
+```sql
+ALTER TABLE marketplace_lead
+ADD COLUMN IF NOT EXISTS source_advisor_profile_email character varying(254);
+```
+
+> Repeat this step for any additional columns identified in Step 2.
+
+---
+
+## Step 5 — Re-enable the Subscription
+
+Once the schema changes are applied, re-enable the subscription:
+
+```sql
+ALTER SUBSCRIPTION beshak_backend_replica1_sub ENABLE;
+```
+
+---
+
+## Step 6 — Verify Replication is Active
+
+Check that the subscription worker is running. A valid `pid` confirms replication is active:
+
+```sql
+SELECT
+    subname,
+    pid,
+    received_lsn,
+    latest_end_lsn,
+    latest_end_time,
+    now() - latest_end_time AS lag
+FROM pg_stat_subscription;
+```
+
+**Expected output:**
+
+| Column | Meaning |
+|---|---|
+| `subname` | Subscription name |
+| `pid` | Worker process ID — **must not be NULL** |
+| `received_lsn` | Last LSN received from primary |
+| `latest_end_lsn` | Last LSN reported back to primary |
+| `latest_end_time` | Timestamp of last contact |
+| `lag` | Time since last replication activity |
+
+> If `pid` is `NULL`, the worker is not running. Check the logs again (Step 1) for new errors.
+
+---
+
+## Quick Reference Summary
+
+| Step | Action |
+|---|---|
+| 1 | Check logs for errors |
+| 2 | Diff columns between primary and replica |
+| 3 | Disable subscription |
+| 4 | Add missing columns to replica |
+| 5 | Enable subscription |
+| 6 | Verify `pid` is present in `pg_stat_subscription` |
+
+
+
 ## Part 2 — WireGuard VPN Setup
 
 ### Step 16 — Install WireGuard on the server
